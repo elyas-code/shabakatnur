@@ -72,16 +72,42 @@
         .btn:hover {
             background: linear-gradient(to bottom, #ffff66, #ffcc00);
         }
-
-        marquee {
+        
+        /* ===== Single-Pass CSS Marquee ===== */
+        .marquee {
             background: #222;
             color: #ffcc00;
-            padding: 5px;
+            padding: 5px 0;
             border-top: 2px solid #ffcc00;
             border-bottom: 2px solid #ffcc00;
             font-family: "Verdana", sans-serif;
             font-size: 13px;
+            overflow: hidden;
+            white-space: nowrap;
         }
+
+        .marquee-content {
+            display: inline-block;
+            padding-left: 100%; /* Start off-screen */
+            animation: marquee-scroll 60s linear infinite;
+        }
+
+        .marquee-content.rtl {
+            padding-left: 0;
+            padding-right: 100%;
+            animation-name: marquee-scroll-rtl;
+        }
+        
+        @keyframes marquee-scroll {
+            from { transform: translateX(0%); }
+            to { transform: translateX(-200%); } /* Scroll across and off the other side */
+        }
+        
+        @keyframes marquee-scroll-rtl {
+            from { transform: translateX(0%); }
+            to { transform: translateX(200%); }
+        }
+
 
         #playerStatus {
             font-size: 13px;
@@ -170,6 +196,15 @@
             color: #ccc;
             font-style: italic;
         }
+
+        #languageSelector {
+            background-color: #333;
+            color: #ffcc00;
+            border: 1px solid #ffcc00;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -177,37 +212,37 @@
 
     <!-- Header -->
     <header class="p-4 text-center">
-        <h1>Shabakat Nur</h1>
-        <p>Latmiyas • Mawalid • Quran</p>
+        <h1 data-translate="shabakat_nur">Shabakat Nur</h1>
+        <p data-translate="slogan">Latmiyas • Mawalid • Quran</p>
     </header>
 
-    <!-- Scrolling marquee -->
-    <marquee behavior="scroll" direction="left">
-        Welcome to Shabakat Nur Radio – Streaming the Light of Faith 24/7
-    </marquee>
+    <!-- CSS Scrolling Marquee -->
+    <div class="marquee">
+        <span id="marquee-content" class="marquee-content" data-translate="welcome_marquee"></span>
+    </div>
 
     <!-- Navigation bar -->
     <div class="nav-bar text-center">
-        <a href="#">Home</a>
-        <a href="#">Schedule</a>
-        <a href="#">Live Stream</a>
-        <a href="#">Contact</a>
+        <a href="#" data-translate="home">Home</a>
+        <a href="#" data-translate="schedule">Schedule</a>
+        <a href="#" data-translate="live_stream_nav">Live Stream</a>
+        <a href="#" data-translate="contact">Contact</a>
     </div>
 
     <!-- Player -->
     <section class="p-6 text-center">
-        <h2>Live Stream</h2>
+        <h2 data-translate="live_stream_header">Live Stream</h2>
 
         <audio id="radioPlayer" src="https://albahrani.org/listen/shabakat_nur/radio.mp3" preload="none"></audio>
 
         <div class="mt-4">
-            <button id="playBtn" class="btn" title="Play">Play</button>
-            <button id="stopBtn" class="btn" title="Stop">Stop</button>
-            <button id="volUpBtn" class="btn">Volume +</button>
-            <button id="volDownBtn" class="btn">Volume −</button>
+            <button id="playBtn" class="btn" title="Play" data-translate="play">Play</button>
+            <button id="stopBtn" class="btn" title="Stop" data-translate="stop">Stop</button>
+            <button id="volUpBtn" class="btn" data-translate="volume_up">Volume +</button>
+            <button id="volDownBtn" class="btn" data-translate="volume_down">Volume −</button>
         </div>
 
-        <div id="playerStatus">Status: Stopped</div>
+        <div id="playerStatus" data-status-key="stopped"></div>
 
         <!-- Now Playing Section -->
         <div class="nowplaying mt-8">
@@ -215,7 +250,7 @@
                 <img id="trackImage" src="https://albahrani.org/static/images/generic_album.jpg" alt="Album Art">
             </div>
             <div class="mt-4">
-                <div id="trackTitle" class="track-title">Loading...</div>
+                <div id="trackTitle" class="track-title" data-translate="loading">Loading...</div>
                 <div id="trackArtist" class="track-artist"></div>
             </div>
         </div>
@@ -223,7 +258,7 @@
 
     <!-- Schedule -->
     <section id="schedule" class="p-6 text-center">
-        <h2 class="text-xl font-semibold mb-4">Schedule</h2>
+        <h2 class="text-xl font-semibold mb-4" data-translate="schedule_header">Schedule</h2>
         <div id="schedule-list" class="space-y-4 flex flex-col items-center"></div>
     </section>
 
@@ -236,47 +271,44 @@
                 container.innerHTML = '';
 
                 if (!data.length) {
-                    container.innerHTML = '<p class="text-gray-400">No schedule data available.</p>';
-                    return;
+                    container.innerHTML = `<p class="text-gray-400" data-translate="no_schedule">No schedule data available.</p>`;
+                } else {
+                    const now = new Date();
+                    data.forEach(show => {
+                        const start = new Date(show.start);
+                        const end = new Date(show.end);
+                        const isCurrent = now >= start && now <= end;
+                        const startStr = start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        const endStr = end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                        const card = document.createElement('div');
+                        card.className = `p-4 rounded-lg shadow max-w-md w-full text-left transition-all ${isCurrent ? 'bg-red-700 animate-pulse shadow-red-500/50 border border-red-400' : 'bg-gray-800'}`;
+                        card.innerHTML = `
+                            <h3 class="text-lg font-bold ${isCurrent ? 'text-white' : 'text-red-400'}">${show.name}</h3>
+                            <p class="text-sm ${isCurrent ? 'text-gray-100' : 'text-gray-300'}">${show.description || 'No description available.'}</p>
+                            <p class="text-xs ${isCurrent ? 'text-gray-200' : 'text-gray-400'} mt-2">${startStr} - ${endStr}</p>`;
+                        container.appendChild(card);
+                    });
                 }
-
-                const now = new Date();
-
-                data.forEach(show => {
-                    const start = new Date(show.start);
-                    const end = new Date(show.end);
-                    const isCurrent = now >= start && now <= end;
-
-                    const startStr = start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    const endStr = end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-                    const card = document.createElement('div');
-                    card.className = `
-        p-4 rounded-lg shadow max-w-md w-full text-left transition-all
-        ${isCurrent ? 'bg-red-700 animate-pulse shadow-red-500/50 border border-red-400' : 'bg-gray-800'}
-      `;
-                    card.innerHTML = `
-        <h3 class="text-lg font-bold ${isCurrent ? 'text-white' : 'text-red-400'}">${show.name}</h3>
-        <p class="text-sm ${isCurrent ? 'text-gray-100' : 'text-gray-300'}">${show.description || 'No description available.'}</p>
-        <p class="text-xs ${isCurrent ? 'text-gray-200' : 'text-gray-400'} mt-2">${startStr} - ${endStr}</p>
-      `;
-
-                    container.appendChild(card);
-                });
             } catch (err) {
                 console.error('Schedule error:', err);
-                document.getElementById('schedule-list').innerHTML =
-                    '<p class="text-red-400">Failed to load schedule.</p>';
+                document.getElementById('schedule-list').innerHTML = `<p class="text-red-400" data-translate="failed_schedule">Failed to load schedule.</p>`;
             }
+            const currentLang = localStorage.getItem('language') || 'en';
+            translatePage(currentLang);
         }
-
-        loadSchedule();
     </script>
 
     <!-- Footer -->
     <footer class="p-3 text-center mt-6">
         <p>© 2005–2025 Shabakat Nur Radio | Powered by Azuracast</p>
-        <p><a href="#" class="text-yellow-300 underline">Back to top</a></p>
+        <p><a href="#" class="text-yellow-300 underline" data-translate="back_to_top">Back to top</a></p>
+        <div class="mt-4">
+            <select id="languageSelector">
+                <option value="en">English</option>
+                <option value="ar">العربية</option>
+            </select>
+        </div>
     </footer>
 
     <script>
@@ -289,56 +321,176 @@
         const trackTitle = document.getElementById("trackTitle");
         const trackArtist = document.getElementById("trackArtist");
         const trackImage = document.getElementById("trackImage");
+        const languageSelector = document.getElementById("languageSelector");
+        const marqueeContent = document.getElementById("marquee-content");
 
-        function updateStatus(text) {
-            statusText.textContent = `Status: ${text}`;
+        let prayerAndDateData = null; // To store fetched prayer times
+
+        const translations = {
+            en: {
+                shabakat_nur: "Shabakat Nur",
+                slogan: "Latmiyas • Mawalid • Quran",
+                welcome_marquee: "Welcome to Shabakat Nur Radio – Streaming the Light of Faith 24/7 |  اللَّهُمَّ عَجِّل لِوَلِيِّكَ الْفَرَج | اللَّهُمَّ كُنْ لِوَلِيِّكَ الحُجَّةِ بْنِ الحَسَنِ صَلَواتُكَ عَلَيْهِ وَعَلى آبائِه فِي هذِهِ السّاعَةِ وَفِي كُلِّ ساعةٍ وَلِيّاً وَحافِظاً وَقائِداً وَناصِراً وَدَلِيلاً وَعَيْناً حَتّى تُسْكِنَهُ أَرْضَكَ طَوْعاً وَتُمَتِّعَهُ فِيْها طَوِيلاً",
+                home: "Home", schedule: "Schedule", live_stream_nav: "Live Stream", contact: "Contact",
+                live_stream_header: "Live Stream",
+                play: "Play", stop: "Stop", volume_up: "Volume +", volume_down: "Volume −",
+                loading: "Loading...", offline: "Offline", error_loading: "Error loading data",
+                schedule_header: "Schedule", no_schedule: "No schedule data available.",
+                failed_schedule: "Failed to load schedule.",
+                back_to_top: "Back to top",
+                status_stopped: "Status: Stopped",
+                status_playing: "Status: Playing",
+                status_volume: "Status: Volume: {value}%",
+                weekdays: { "Sunday": "Sunday", "Monday": "Monday", "Tuesday": "Tuesday", "Wednesday": "Wednesday", "Thursday": "Thursday", "Friday": "Friday", "Saturday": "Saturday" },
+                gregorian_months: { "January": "January", "February": "February", "March": "March", "April": "April", "May": "May", "June": "June", "July": "July", "August": "August", "September": "September", "October": "October", "November": "November", "December": "December" },
+                imsak: "Imsak", fajr: "Fajr", dhuhr: "Dhuhr", maghrib: "Maghrib"
+            },
+            ar: {
+                shabakat_nur: "شبكة نور",
+                slogan: "لطميات • مواليد • قرآن",
+                welcome_marquee: "أهلاً بكم في راديو شبكة نور - بث نور الإيمان ٧/٢٤ |  اللَّهُمَّ عَجِّل لِوَلِيِّكَ الْفَرَج | اللَّهُمَّ كُنْ لِوَلِيِّكَ الحُجَّةِ بْنِ الحَسَنِ صَلَواتُكَ عَلَيْهِ وَعَلى آبائِه فِي هذِهِ السّاعَةِ وَفِي كُلِّ ساعةٍ وَلِيّاً وَحافِظاً وَقائِداً وَناصِراً وَدَلِيلاً وَعَيْناً حَتّى تُسْكِنَهُ أَرْضَكَ طَوْعاً وَتُمَتِّعَهُ فِيْها طَوِيلاً",
+                home: "الرئيسية", schedule: "الجدول الزمني", live_stream_nav: "البث المباشر", contact: "اتصل بنا",
+                live_stream_header: "البث المباشر",
+                play: "تشغيل", stop: "إيقاف", volume_up: "رفع الصوت", volume_down: "خفض الصوت",
+                loading: "جار التحميل...", offline: "غير متصل", error_loading: "خطأ في تحميل البيانات",
+                schedule_header: "الجدول الزمني", no_schedule: "لا توجد بيانات للجدول الزمني.",
+                failed_schedule: "فشل تحميل الجدول الزمني.",
+                back_to_top: "العودة إلى الأعلى",
+                status_stopped: "الحالة: متوقف",
+                status_playing: "الحالة: قيد التشغيل",
+                status_volume: "الحالة: مستوى الصوت: {value}%",
+                weekdays: { "Sunday": "الأحد", "Monday": "الاثنين", "Tuesday": "الثلاثاء", "Wednesday": "الأربعاء", "Thursday": "الخميس", "Friday": "الجمعة", "Saturday": "السبت" },
+                gregorian_months: { "January": "يناير", "February": "فبراير", "March": "مارس", "April": "أبريل", "May": "مايو", "June": "يونيو", "July": "يوليو", "August": "أغسطس", "September": "سبتمبر", "October": "أكتوبر", "November": "نوفمبر", "December": "ديسمبر" },
+                imsak: "الإمساك", fajr: "الفجر", dhuhr: "الظهر", maghrib: "المغرب"
+            }
+        };
+
+        async function fetchPrayerAndDateInfo() {
+            try {
+                // Fetch timings for today in Manama, Bahrain using Jafari (Ithna Ashari) method=2
+                const response = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Manama&country=Bahrain&method=2');
+                const data = await response.json();
+                if (data.code === 200) {
+                    prayerAndDateData = data.data; 
+                } else {
+                    console.error("Failed to fetch prayer times from AlAdhan API:", data.status);
+                }
+            } catch (error) {
+                console.error("Error connecting to AlAdhan API:", error);
+            }
         }
 
-        playBtn.addEventListener("click", () => {
-            player.play();
-            updateStatus("Playing");
-        });
+        function updateStatus(key, extraValue = "") {
+            statusText.setAttribute('data-status-key', key);
+            const lang = localStorage.getItem('language') || 'en';
+            const translationKey = `status_${key}`;
+            let text = translations[lang][translationKey] || `Status: ${key}`;
 
-        stopBtn.addEventListener("click", () => {
-            player.pause();
-            player.currentTime = 0;
-            updateStatus("Stopped");
-        });
+            if (extraValue) {
+                text = text.replace('{value}', extraValue);
+            }
+            statusText.textContent = text;
+        }
 
-        volUpBtn.addEventListener("click", () => {
-            player.volume = Math.min(1, player.volume + 0.1);
-            updateStatus(`Volume: ${(player.volume * 100).toFixed(0)}%`);
-        });
+        function translatePage(lang) {
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                if (element.id !== 'marquee-content') {
+                    const key = element.getAttribute('data-translate');
+                    if (translations[lang][key]) {
+                        element.textContent = translations[lang][key];
+                    }
+                }
+            });
 
-        volDownBtn.addEventListener("click", () => {
-            player.volume = Math.max(0, player.volume - 0.1);
-            updateStatus(`Volume: ${(player.volume * 100).toFixed(0)}%`);
-        });
+            let marqueeText = translations[lang].welcome_marquee;
+            if (prayerAndDateData) {
+                const gDay = prayerAndDateData.date.gregorian.day;
+                const gMonthKey = prayerAndDateData.date.gregorian.month.en;
+                const gMonth = translations[lang].gregorian_months[gMonthKey];
+                const gYear = prayerAndDateData.date.gregorian.year;
+                const gWeekdayKey = prayerAndDateData.date.gregorian.weekday.en;
+                const gWeekday = translations[lang].weekdays[gWeekdayKey];
+                const gregorianString = `${gWeekday}, ${gDay} ${gMonth}, ${gYear}`;
+
+                const hDay = prayerAndDateData.date.hijri.day;
+                const hYear = prayerAndDateData.date.hijri.year;
+                const hMonth = lang === 'ar' ? prayerAndDateData.date.hijri.month.ar : prayerAndDateData.date.hijri.month.en;
+                const hWeekday = lang === 'ar' ? prayerAndDateData.date.hijri.weekday.ar : prayerAndDateData.date.hijri.weekday.en;
+                const hijriString = `${hWeekday}, ${hDay} ${hMonth} ${hYear}`;
+
+                const { Imsak, Fajr, Dhuhr, Maghrib } = prayerAndDateData.timings;
+                
+                const prayerString = ` | ${translations[lang].imsak}: ${Imsak} | ${translations[lang].fajr}: ${Fajr} | ${translations[lang].dhuhr}: ${Dhuhr} | ${translations[lang].maghrib}: ${Maghrib}`;
+
+                marqueeText += ` | ${gregorianString} | ${hijriString}${prayerString}`;
+            }
+            marqueeContent.textContent = marqueeText;
+        }
+        
+        function setLanguage(lang) {
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            
+            localStorage.setItem('language', lang);
+            languageSelector.value = lang;
+
+            if (lang === 'ar') {
+                marqueeContent.classList.add('rtl');
+            } else {
+                marqueeContent.classList.remove('rtl');
+            }
+
+            translatePage(lang);
+
+            const currentStatusKey = statusText.getAttribute('data-status-key');
+            let extraInfo = "";
+            if (currentStatusKey === 'volume') {
+                extraInfo = (player.volume * 100).toFixed(0);
+            }
+            updateStatus(currentStatusKey, extraInfo);
+            
+            fetchNowPlaying();
+        }
+        
+        playBtn.addEventListener("click", () => { player.play(); updateStatus("playing"); });
+        stopBtn.addEventListener("click", () => { player.pause(); player.currentTime = 0; updateStatus("stopped"); });
+        volUpBtn.addEventListener("click", () => { player.volume = Math.min(1, player.volume + 0.1); updateStatus("volume", (player.volume * 100).toFixed(0)); });
+        volDownBtn.addEventListener("click", () => { player.volume = Math.max(0, player.volume - 0.1); updateStatus("volume", (player.volume * 100).toFixed(0)); });
+
+        languageSelector.addEventListener('change', (event) => { setLanguage(event.target.value); });
 
         async function fetchNowPlaying() {
+            const lang = localStorage.getItem('language') || 'en';
             try {
                 const response = await fetch("https://albahrani.org/api/nowplaying");
                 const data = await response.json();
                 const station = data.find(s => s.station.shortcode === "shabakat_nur");
 
-                if (station) {
-                    trackTitle.textContent = station.now_playing.song.title || "Unknown Title";
+                if (station && station.now_playing.song.title) {
+                    trackTitle.textContent = station.now_playing.song.title;
                     trackArtist.textContent = station.now_playing.song.artist || "";
                     trackImage.src = station.now_playing.song.art || "https://albahrani.org/static/images/generic_album.jpg";
                 } else {
-                    trackTitle.textContent = "Offline";
+                    trackTitle.textContent = translations[lang].offline;
                     trackArtist.textContent = "";
                     trackImage.src = "https://albahrani.org/static/images/generic_album.jpg";
                 }
             } catch (e) {
-                trackTitle.textContent = "Error loading data";
+                trackTitle.textContent = translations[lang].error_loading;
+                trackArtist.textContent = "";
             }
         }
 
-        fetchNowPlaying();
-        setInterval(fetchNowPlaying, 30000); // refresh every 30 seconds
+        document.addEventListener('DOMContentLoaded', async () => {
+            await fetchPrayerAndDateInfo();
+            
+            const savedLang = localStorage.getItem('language') || 'en';
+            setLanguage(savedLang);
+            
+            loadSchedule();
+            setInterval(fetchNowPlaying, 30000);
+        });
     </script>
 
 </body>
-
 </html>
