@@ -72,7 +72,7 @@
         .btn:hover {
             background: linear-gradient(to bottom, #ffff66, #ffcc00);
         }
-        
+
         /* ===== Single-Pass CSS Marquee ===== */
         .marquee {
             background: #222;
@@ -88,8 +88,9 @@
 
         .marquee-content {
             display: inline-block;
-            padding-left: 100%; /* Start off-screen */
-            animation: marquee-scroll 60s linear infinite;
+            padding-left: 100%;
+            /* Start off-screen */
+            animation: marquee-scroll 70s linear infinite;
         }
 
         .marquee-content.rtl {
@@ -97,15 +98,27 @@
             padding-right: 100%;
             animation-name: marquee-scroll-rtl;
         }
-        
+
         @keyframes marquee-scroll {
-            from { transform: translateX(0%); }
-            to { transform: translateX(-200%); } /* Scroll across and off the other side */
+            from {
+                transform: translateX(0%);
+            }
+
+            to {
+                transform: translateX(-200%);
+            }
+
+            /* Scroll across and off the other side */
         }
-        
+
         @keyframes marquee-scroll-rtl {
-            from { transform: translateX(0%); }
-            to { transform: translateX(200%); }
+            from {
+                transform: translateX(0%);
+            }
+
+            to {
+                transform: translateX(200%);
+            }
         }
 
 
@@ -205,6 +218,7 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         .retro-card {
             background: #4a4a4a;
             /* A classic grey background */
@@ -218,7 +232,8 @@
             /* Hard, offset shadow for a 3D effect */
             font-family: "Arial", sans-serif;
             /* Using a more standard, retro font */
-            position: relative; /* Needed for absolute positioning of 'Now Playing' */
+            position: relative;
+            /* Needed for absolute positioning of 'Now Playing' */
         }
 
         .retro-card h3 {
@@ -250,7 +265,7 @@
             top: 10px;
             left: auto;
             right: 10px;
-            background: linear-gradient(to bottom, #ff3333, #cc0000); 
+            background: linear-gradient(to bottom, #ff3333, #cc0000);
             color: white;
             padding: 2px 8px;
             font-size: 12px;
@@ -261,10 +276,16 @@
         }
 
         @keyframes retro-blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
 
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
@@ -418,7 +439,7 @@
             ar: {
                 shabakat_nur: "شبكة نور",
                 slogan: "لطميات • مواليد • قرآن",
-                welcome_marquee: "أهلاً بكم في راديو شبكة نور - بث نور الإيمان ٧/٢٤ |  اللَّهُمَّ عَجِّل لِوَلِيِّكَ الْفَرَج | اللَّهُمَّ كُنْ لِوَلِيِّكَ الحُجَّةِ بْنِ الحَسَنِ صَلَواتُكَ عَلَيْهِ وَعَلى آبائِه فِي هذِهِ السّاعَةِ وَفِي كُلِّ ساعةٍ وَلِيّاً وَحافِظاً وَقائِداً وَناصِراً وَدَلِيلاً وَعَيْناً حَتّى تُسْكِنَهُ أَرْضَكَ طَوْعاً وَتُمَتِّعَهُ فِيْها طَوِيلاً",
+                welcome_marquee: "أهلاً بكم في راديو شبكة نور - بث نور الإيمان ٧/٢٤ |  اللَّهُمَّ عَجِّل لِوَلِيِّكَ الْفَرَج | اللَّهُمَّ كُنْ لِوَلِيِّكَ الحُجَّةِ بْنِ الحَسَنِ صَلَواتُكَ عَلَيْهِ وَعَلى آبائِه فِي هذِهِ السّاعَةِ وَفِي كُلِّ ساعةٍ وَلِيّاً وَحافِظاً وَقائِداً وَناصِراً وَدَلِيلاً وَعَيْناً حَتّى تُسْكِنَهُ أَرْضَكَ طَوْعاً وَتُمَتِّعَهُ فِيْها طَوِيلاً | اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ، اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ",
                 home: "الرئيسية", schedule: "الجدول الزمني", live_stream_nav: "البث المباشر", contact: "اتصل بنا",
                 live_stream_header: "البث المباشر",
                 play: "تشغيل", stop: "إيقاف", volume_up: "رفع الصوت", volume_down: "خفض الصوت",
@@ -441,7 +462,7 @@
                 const response = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Manama&country=Bahrain&method=0');
                 const data = await response.json();
                 if (data.code === 200) {
-                    prayerAndDateData = data.data; 
+                    prayerAndDateData = data.data;
                 } else {
                     console.error("Failed to fetch prayer times from AlAdhan API:", data.status);
                 }
@@ -463,7 +484,27 @@
         }
 
         function translatePage(lang) {
+            // Get the current text of trackTitle before translation
+            const currentTrackTitleText = trackTitle.textContent;
+
             document.querySelectorAll('[data-translate]').forEach(element => {
+                // Add checks to explicitly skip trackTitle and trackArtist
+                if (element.id === 'trackTitle' || element.id === 'trackArtist') {
+                    // Skip translation for these elements if they already contain non-loading content
+                    // (meaning fetchNowPlaying has likely updated them)
+                    if (element.getAttribute('data-translate') === 'loading' && element.id === 'trackTitle' && currentTrackTitleText !== translations['en']['loading'] && currentTrackTitleText !== translations['ar']['loading']) {
+                        // If trackTitle still has 'loading' as its data-translate but its text content is
+                        // NOT 'Loading...' or 'جار التحميل...', then it means fetchNowPlaying has
+                        // successfully updated it. Do not overwrite it.
+                        return; // Skip this element
+                    }
+                    if (element.id === 'trackArtist' && element.textContent !== '') {
+                        // If trackArtist has content, assume it's from fetchNowPlaying. Don't overwrite.
+                        return;
+                    }
+                }
+
+
                 if (element.id !== 'marquee-content' && !element.classList.contains('now-playing-indicator')) {
                     const key = element.getAttribute('data-translate');
                     if (translations[lang][key]) {
@@ -476,7 +517,6 @@
             document.querySelectorAll('.now-playing-indicator').forEach(indicator => {
                 indicator.textContent = translations[lang].now_playing;
             });
-
 
             let marqueeText = translations[lang].welcome_marquee;
             if (prayerAndDateData) {
@@ -495,18 +535,18 @@
                 const hijriString = `${hWeekday}, ${hDay} ${hMonth} ${hYear}`;
 
                 const { Imsak, Fajr, Dhuhr, Maghrib } = prayerAndDateData.timings;
-                
+
                 const prayerString = ` | ${translations[lang].imsak}: ${Imsak} | ${translations[lang].fajr}: ${Fajr} | ${translations[lang].dhuhr}: ${Dhuhr} | ${translations[lang].maghrib}: ${Maghrib}`;
 
                 marqueeText += ` | ${gregorianString} | ${hijriString}${prayerString}`;
             }
             marqueeContent.textContent = marqueeText;
         }
-        
+
         function setLanguage(lang) {
             document.documentElement.lang = lang;
             document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-            
+
             localStorage.setItem('language', lang);
             languageSelector.value = lang;
 
@@ -524,11 +564,11 @@
                 extraInfo = (player.volume * 100).toFixed(0);
             }
             updateStatus(currentStatusKey, extraInfo);
-            
+
             fetchNowPlaying();
             loadSchedule();
         }
-        
+
         playBtn.addEventListener("click", () => { player.play(); updateStatus("playing"); });
         stopBtn.addEventListener("click", () => { player.pause(); player.currentTime = 0; updateStatus("stopped"); });
         volUpBtn.addEventListener("click", () => { player.volume = Math.min(1, player.volume + 0.1); updateStatus("volume", (player.volume * 100).toFixed(0)); });
@@ -562,10 +602,12 @@
             await fetchPrayerAndDateInfo();
             const savedLang = localStorage.getItem('language') || 'en';
             setLanguage(savedLang);
+            fetchNowPlaying();
             setInterval(loadSchedule, 30000);
             setInterval(fetchNowPlaying, 30000);
         });
     </script>
 
 </body>
+
 </html>
