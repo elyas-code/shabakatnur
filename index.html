@@ -21,8 +21,15 @@
             align-items: center;
         }
 
-        a { color: #ffcc00; text-decoration: none; }
-        a:hover { text-decoration: underline; color: #fff; }
+        a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
 
         .page-wrapper {
             max-width: 1200px;
@@ -81,8 +88,25 @@
             animation-name: marquee-scroll-rtl;
         }
 
-        @keyframes marquee-scroll { from { transform: translateX(0%); } to { transform: translateX(-200%); } }
-        @keyframes marquee-scroll-rtl { from { transform: translateX(0%); } to { transform: translateX(200%); } }
+        @keyframes marquee-scroll {
+            from {
+                transform: translateX(0%);
+            }
+
+            to {
+                transform: translateX(-200%);
+            }
+        }
+
+        @keyframes marquee-scroll-rtl {
+            from {
+                transform: translateX(0%);
+            }
+
+            to {
+                transform: translateX(200%);
+            }
+        }
 
         .content-container {
             display: flex;
@@ -133,12 +157,34 @@
             color: #ddd;
         }
 
-        .nav-list { list-style: none; padding: 0; margin: 0; }
-        .nav-list li { border-bottom: 1px solid #333; padding: 6px 0; text-align: center; }
-        .nav-list li:last-child { border-bottom: none; }
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-        .nav-link { display: block; width: 100%; font-weight: bold; transition: color 0.2s; }
-        .nav-link.active { color: #fff; background: #333; border-radius: 4px; }
+        .nav-list li {
+            border-bottom: 1px solid #333;
+            padding: 6px 0;
+            text-align: center;
+        }
+
+        .nav-list li:last-child {
+            border-bottom: none;
+        }
+
+        .nav-link {
+            display: block;
+            width: 100%;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+
+        .nav-link.active {
+            color: #fff;
+            background: #333;
+            border-radius: 4px;
+        }
 
         .input-field {
             width: 100%;
@@ -150,9 +196,20 @@
             font-size: 12px;
         }
 
-        .prayer-table { width: 100%; text-align: center; font-size: 12px; }
-        .prayer-table td { padding: 4px; border-bottom: 1px solid #333; }
-        .prayer-table tr:last-child td { border-bottom: none; }
+        .prayer-table {
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .prayer-table td {
+            padding: 4px;
+            border-bottom: 1px solid #333;
+        }
+
+        .prayer-table tr:last-child td {
+            border-bottom: none;
+        }
 
         .btn {
             background: linear-gradient(to bottom, #ffcc00, #cc9900);
@@ -164,16 +221,22 @@
             cursor: pointer;
             margin: 2px;
         }
-        .btn:hover { background: linear-gradient(to bottom, #ffff66, #ffcc00); }
 
-        :root { --cd-image: url('Digital-CD-Disk-Vector-Transparent-PNG.png'); }
+        .btn:hover {
+            background: linear-gradient(to bottom, #ffff66, #ffcc00);
+        }
+
+        :root {
+            --cd-image: url('Digital-CD-Disk-Vector-Transparent-PNG.png');
+        }
 
         .profile-pic {
             position: relative;
             width: 183px;
             filter: drop-shadow(0 0 0.25rem gray);
             margin: 20px auto;
-            direction: rtl; /* Forces CD to stay Left-to-Right */
+            direction: rtl;
+            /* Forces CD to stay Left-to-Right */
         }
 
         .profile-pic:after {
@@ -183,7 +246,10 @@
                     rgba(255, 255, 255, 0.2), 40%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.6));
             background-size: contain, cover;
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
         }
 
@@ -191,8 +257,10 @@
             content: "";
             background: var(--cd-image);
             position: absolute;
-            top: 5px; left: -20px;
-            width: 150px; height: 150px;
+            top: 5px;
+            left: -20px;
+            width: 150px;
+            height: 150px;
             background-repeat: no-repeat;
             z-index: -1;
             animation-name: spin;
@@ -202,14 +270,39 @@
             transition: left ease 0.5s;
         }
 
-        .profile-pic:hover:before { left: -75px; }
+        .profile-pic:hover:before {
+            left: -75px;
+        }
 
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
 
-        .profile-pic img { width: 163px; height: 160px; object-fit: cover; border: none; }
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
-        .track-title { color: #ffcc00; font-weight: bold; font-size: 15px; margin-top: 5px; }
-        .track-artist { font-style: italic; color: #ccc; font-size: 13px; }
+        .profile-pic img {
+            width: 163px;
+            height: 160px;
+            object-fit: cover;
+            border: none;
+        }
+
+        .track-title {
+            color: #ffcc00;
+            font-weight: bold;
+            font-size: 15px;
+            margin-top: 5px;
+        }
+
+        .track-artist {
+            font-style: italic;
+            color: #ccc;
+            font-size: 13px;
+        }
 
         .retro-card {
             background: #2a2a2a;
@@ -219,17 +312,51 @@
             width: 100%;
         }
 
-        html[dir='rtl'] .retro-card { text-align: right; }
-        .retro-card h3 { color: #ffcc00; font-weight: bold; border-bottom: 1px solid #444; margin-bottom: 5px; }
+        html[dir='rtl'] .retro-card {
+            text-align: right;
+        }
 
-        .page-view { display: none; animation: fadeIn 0.5s; }
-        .page-view.active-view { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .retro-card h3 {
+            color: #ffcc00;
+            font-weight: bold;
+            border-bottom: 1px solid #444;
+            margin-bottom: 5px;
+        }
+
+        .page-view {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .page-view.active-view {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
 
         @media (max-width: 900px) {
-            .content-container { flex-direction: column; }
-            .sidebar { width: 100%; order: 2; }
-            .center-column { width: 100%; order: 1; margin-bottom: 20px; }
+            .content-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+
+            .center-column {
+                width: 100%;
+                order: 1;
+                margin-bottom: 20px;
+            }
         }
 
         footer {
@@ -262,20 +389,71 @@
                     <div class="block-title" data-translate="menu_header">Main Menu</div>
                     <div class="block-content">
                         <ul class="nav-list">
-                            <li><a href="?page=home" class="nav-link" data-page="home" data-translate="home">Home Page</a></li>
-                            <li><a href="?page=schedule" class="nav-link" data-page="schedule" data-translate="schedule">Schedule</a></li>
-                            <li><a href="?page=contact" class="nav-link" data-page="contact" data-translate="contact">Contact Us</a></li>
+                            <li><a href="?page=home" class="nav-link" data-page="home" data-translate="home">Home
+                                    Page</a></li>
+                            <li><a href="?page=schedule" class="nav-link" data-page="schedule"
+                                    data-translate="schedule">Schedule</a></li>
+                            <li><a href="?page=contact" class="nav-link" data-page="contact"
+                                    data-translate="contact">Contact Us</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="side-block">
                     <div class="block-title" data-translate="newsletter_header">Newsletter</div>
-                    <div class="block-content" style="text-align: center;">
-                        <input type="email" class="input-field" placeholder="email@example.com">
-                        <button class="btn" style="width: 100%;" data-translate="subscribe">Subscribe</button>
-                    </div>
+
+                    <form id="newsletter-form">
+                        <div class="block-content" style="text-align: center;">
+                            <input type="email" class="input-field" name="fields[email]" placeholder="email@example.com"
+                                required>
+
+                            <button type="submit" class="btn" style="width: 100%;" data-translate="subscribe">
+                                Subscribe
+                            </button>
+
+                            <!-- Status messages (already translated by your system) -->
+                            <p class="newsletter-success" data-translate="newsletter_success" hidden>
+                                Thanks for subscribing!
+                            </p>
+
+                            <p class="newsletter-error" data-translate="newsletter_error" hidden>
+                                Something went wrong. Try again.
+                            </p>
+                        </div>
+                    </form>
                 </div>
+
+                <script>
+                    const form = document.getElementById("newsletter-form");
+                    const success = form.querySelector(".newsletter-success");
+                    const error = form.querySelector(".newsletter-error");
+
+                    form.addEventListener("submit", (e) => {
+                        e.preventDefault();
+
+                        success.hidden = true;
+                        error.hidden = true;
+
+                        const formData = new FormData(form);
+                        formData.append("ml-submit", "1");
+
+                        fetch(
+                            "https://assets.mailerlite.com/jsonp/1988679/forms/174051428719920669/subscribe",
+                            {
+                                method: "POST",
+                                body: formData,
+                                mode: "no-cors"
+                            }
+                        )
+                            .then(() => {
+                                form.reset();
+                                success.hidden = false;
+                            })
+                            .catch(() => {
+                                error.hidden = false;
+                            });
+                    });
+                </script>
 
                 <div class="side-block">
                     <div class="block-title" data-translate="search_header">Search</div>
@@ -286,7 +464,7 @@
                 </div>
 
                 <div class="side-block">
-                    <div class="block-title" data-translate="lang" >Language</div>
+                    <div class="block-title" data-translate="lang">Language</div>
                     <div class="block-content" style="text-align: center;">
                         <select id="languageSelector" class="input-field">
                             <option value="en">English</option>
@@ -300,16 +478,19 @@
                 <div id="view-home" class="page-view active-view">
                     <div class="retro-card" style="text-align: center; overflow: visible;">
                         <h3 data-translate="live_stream_header">Live Stream</h3>
-                        <audio id="radioPlayer" src="https://albahrani.org/listen/shabakat_nur/SDradio.mp3" preload="auto"></audio>
+                        <audio id="radioPlayer" src="https://albahrani.org/listen/shabakat_nur/SDradio.mp3"
+                            preload="auto"></audio>
                         <div style="margin: 10px 0;">
                             <button id="playBtn" class="btn" data-translate="play">Play</button>
                             <button id="stopBtn" class="btn" data-translate="stop">Stop</button>
                             <button id="volUpBtn" class="btn">+</button>
                             <button id="volDownBtn" class="btn">−</button>
                         </div>
-                        <div id="playerStatus" style="font-size: 11px; color: #aaa; margin-bottom: 15px;">Status: Stopped</div>
+                        <div id="playerStatus" style="font-size: 11px; color: #aaa; margin-bottom: 15px;">Status:
+                            Stopped</div>
                         <div class="profile-pic">
-                            <img id="trackImage" src="https://albahrani.org/static/images/generic_album.jpg" alt="Album Art">
+                            <img id="trackImage" src="https://albahrani.org/static/images/generic_album.jpg"
+                                alt="Album Art">
                         </div>
                         <div id="trackTitle" class="track-title" data-translate="loading">Loading...</div>
                         <div id="trackArtist" class="track-artist"></div>
@@ -319,7 +500,8 @@
                         <div class="retro-card">
                             <h3 data-translate="about_header">About Station</h3>
                             <p style="font-size: 12px; line-height: 1.4; color: #ddd;" data-translate="about_text">
-                                Shabakat Nur is a 24/7 online radio station dedicated to streaming the finest Latmiyas, Mawalid, and Quran recitations.
+                                Shabakat Nur is a 24/7 online radio station dedicated to streaming the finest Latmiyas,
+                                Mawalid, and Quran recitations.
                             </p>
                         </div>
                         <div class="retro-card">
@@ -361,7 +543,8 @@
                     <div class="block-title" data-translate="prayer_times_header">Prayer Times</div>
                     <div class="block-content">
                         <div id="prayer-display">
-                            <p style="text-align:center; font-size:11px; color:#aaa;" data-translate="loading">Loading...</p>
+                            <p style="text-align:center; font-size:11px; color:#aaa;" data-translate="loading">
+                                Loading...</p>
                         </div>
                     </div>
                 </div>
@@ -369,7 +552,8 @@
                 <div class="side-block">
                     <div class="block-title" data-translate="date_header">Date</div>
                     <div class="block-content" style="text-align: center;">
-                        <div id="date-display-greg" style="font-weight: bold; color: #ffcc00; margin-bottom: 2px;"></div>
+                        <div id="date-display-greg" style="font-weight: bold; color: #ffcc00; margin-bottom: 2px;">
+                        </div>
                         <div id="date-display-hijri" style="font-size: 11px; color: #ccc;"></div>
                     </div>
                 </div>
@@ -378,7 +562,9 @@
                     <div class="block-title" data-translate="users_header">Online</div>
                     <div class="block-content">
                         <div style="display:flex; align-items:center; gap:5px; font-size: 12px;">
-                            <a href="https://info.flagcounter.com/6HUE"><img src="https://s01.flagcounter.com/count2/6HUE/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+                            <a href="https://info.flagcounter.com/6HUE"><img
+                                    src="https://s01.flagcounter.com/count2/6HUE/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_0/labels_0/pageviews_0/flags_0/percent_0/"
+                                    alt="Flag Counter" border="0"></a>
                         </div>
                     </div>
                 </div>
@@ -419,7 +605,9 @@
                 back_to_top: "Back to top",
                 imsak: "Imsak", fajr: "Fajr", dhuhr: "Dhuhr", maghrib: "Maghrib", sunrise: "Sunrise",
                 now_playing: "Now Playing",
-                lang: "Language"
+                lang: "Language",
+                newsletter_success: "Thanks for subscribing!",
+                newsletter_error: "Something went wrong. Try again."
             },
             ar: {
                 shabakat_nur: "شبكة نور",
@@ -447,7 +635,9 @@
                 back_to_top: "العودة إلى الأعلى",
                 imsak: "الإمساك", fajr: "الفجر", dhuhr: "الظهرين", maghrib: "العشائين", sunrise: "الشروق",
                 now_playing: "يذاع الآن",
-                lang: "اللغة"
+                lang: "اللغة",
+                newsletter_success: "شكراً لاشتراكك!",
+                newsletter_error: "حدث خطأ ما. حاول مرة أخرى."
             }
         };
 
