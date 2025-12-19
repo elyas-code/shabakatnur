@@ -40,28 +40,20 @@
             border: 1px solid #444;
         }
 
+        /* UPDATED HEADER STYLES */
         .site-header {
-            background: linear-gradient(to bottom, #990000, #660000);
+            background: #660000; /* Fallback color */
             border-bottom: 4px solid #ffcc00;
-            padding: 20px;
+            padding: 0; /* Removed padding to allow image to be flush */
             text-align: center;
-            position: relative;
+            overflow: hidden;
+            line-height: 0; /* Removes small gap under image */
         }
 
-        h1 {
-            font-family: "Tahoma", sans-serif;
-            font-size: 36px;
-            letter-spacing: 1px;
-            text-shadow: 2px 2px 4px #000;
-            margin: 0;
-        }
-
-        .slogan {
-            color: #ffcc00;
-            font-size: 14px;
-            font-weight: bold;
-            margin-top: 5px;
-            text-shadow: 1px 1px 2px #000;
+        .site-banner {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         .marquee-container {
@@ -89,23 +81,13 @@
         }
 
         @keyframes marquee-scroll {
-            from {
-                transform: translateX(0%);
-            }
-
-            to {
-                transform: translateX(-200%);
-            }
+            from { transform: translateX(0%); }
+            to { transform: translateX(-200%); }
         }
 
         @keyframes marquee-scroll-rtl {
-            from {
-                transform: translateX(0%);
-            }
-
-            to {
-                transform: translateX(200%);
-            }
+            from { transform: translateX(0%); }
+            to { transform: translateX(200%); }
         }
 
         .content-container {
@@ -236,7 +218,6 @@
             filter: drop-shadow(0 0 0.25rem gray);
             margin: 20px auto;
             direction: rtl;
-            /* Forces CD to stay Left-to-Right */
         }
 
         .profile-pic:after {
@@ -275,13 +256,8 @@
         }
 
         @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .profile-pic img {
@@ -333,30 +309,14 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @media (max-width: 900px) {
-            .content-container {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-                order: 2;
-            }
-
-            .center-column {
-                width: 100%;
-                order: 1;
-                margin-bottom: 20px;
-            }
+            .content-container { flex-direction: column; }
+            .sidebar { width: 100%; order: 2; }
+            .center-column { width: 100%; order: 1; margin-bottom: 20px; }
         }
 
         footer {
@@ -375,8 +335,8 @@
 
     <div class="page-wrapper">
         <header class="site-header">
-            <h1 data-translate="shabakat_nur">Shabakat Nur</h1>
-            <div class="slogan" data-translate="slogan">Latmiyas • Mawalid • Quran</div>
+            <!-- REPLACED TEXT WITH IMAGE -->
+            <img src="banner.jpeg" alt="Shabakat Nur Radio Banner" class="site-banner">
         </header>
 
         <div class="marquee-container">
@@ -389,71 +349,24 @@
                     <div class="block-title" data-translate="menu_header">Main Menu</div>
                     <div class="block-content">
                         <ul class="nav-list">
-                            <li><a href="?page=home" class="nav-link" data-page="home" data-translate="home">Home
-                                    Page</a></li>
-                            <li><a href="?page=schedule" class="nav-link" data-page="schedule"
-                                    data-translate="schedule">Schedule</a></li>
-                            <li><a href="?page=contact" class="nav-link" data-page="contact"
-                                    data-translate="contact">Contact Us</a></li>
+                            <li><a href="?page=home" class="nav-link" data-page="home" data-translate="home">Home Page</a></li>
+                            <li><a href="?page=schedule" class="nav-link" data-page="schedule" data-translate="schedule">Schedule</a></li>
+                            <li><a href="?page=contact" class="nav-link" data-page="contact" data-translate="contact">Contact Us</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="side-block">
                     <div class="block-title" data-translate="newsletter_header">Newsletter</div>
-
                     <form id="newsletter-form">
                         <div class="block-content" style="text-align: center;">
-                            <input type="email" class="input-field" name="fields[email]" placeholder="email@example.com"
-                                required>
-
-                            <button type="submit" class="btn" style="width: 100%;" data-translate="subscribe">
-                                Subscribe
-                            </button>
-
-                            <!-- Status messages (already translated by your system) -->
-                            <p class="newsletter-success" data-translate="newsletter_success" hidden>
-                                Thanks for subscribing!
-                            </p>
-
-                            <p class="newsletter-error" data-translate="newsletter_error" hidden>
-                                Something went wrong. Try again.
-                            </p>
+                            <input type="email" class="input-field" name="fields[email]" placeholder="email@example.com" required>
+                            <button type="submit" class="btn" style="width: 100%;" data-translate="subscribe">Subscribe</button>
+                            <p class="newsletter-success" data-translate="newsletter_success" hidden>Thanks for subscribing!</p>
+                            <p class="newsletter-error" data-translate="newsletter_error" hidden>Something went wrong. Try again.</p>
                         </div>
                     </form>
                 </div>
-
-                <script>
-                    const form = document.getElementById("newsletter-form");
-                    const success = form.querySelector(".newsletter-success");
-                    const error = form.querySelector(".newsletter-error");
-
-                    form.addEventListener("submit", (e) => {
-                        e.preventDefault();
-
-                        success.hidden = true;
-                        error.hidden = true;
-
-                        const formData = new FormData(form);
-                        formData.append("ml-submit", "1");
-
-                        fetch(
-                            "https://assets.mailerlite.com/jsonp/1988679/forms/174051428719920669/subscribe",
-                            {
-                                method: "POST",
-                                body: formData,
-                                mode: "no-cors"
-                            }
-                        )
-                            .then(() => {
-                                form.reset();
-                                success.hidden = false;
-                            })
-                            .catch(() => {
-                                error.hidden = false;
-                            });
-                    });
-                </script>
 
                 <div class="side-block">
                     <div class="block-title" data-translate="search_header">Search</div>
@@ -478,19 +391,16 @@
                 <div id="view-home" class="page-view active-view">
                     <div class="retro-card" style="text-align: center; overflow: visible;">
                         <h3 data-translate="live_stream_header">Live Stream</h3>
-                        <audio id="radioPlayer" src="https://albahrani.org/listen/shabakat_nur/SDradio.mp3"
-                            preload="auto"></audio>
+                        <audio id="radioPlayer" src="https://albahrani.org/listen/shabakat_nur/SDradio.mp3" preload="auto"></audio>
                         <div style="margin: 10px 0;">
                             <button id="playBtn" class="btn" data-translate="play">Play</button>
                             <button id="stopBtn" class="btn" data-translate="stop">Stop</button>
                             <button id="volUpBtn" class="btn">+</button>
                             <button id="volDownBtn" class="btn">−</button>
                         </div>
-                        <div id="playerStatus" style="font-size: 11px; color: #aaa; margin-bottom: 15px;">Status:
-                            Stopped</div>
+                        <div id="playerStatus" style="font-size: 11px; color: #aaa; margin-bottom: 15px;">Status: Stopped</div>
                         <div class="profile-pic">
-                            <img id="trackImage" src="https://albahrani.org/static/images/generic_album.jpg"
-                                alt="Album Art">
+                            <img id="trackImage" src="https://albahrani.org/static/images/generic_album.jpg" alt="Album Art">
                         </div>
                         <div id="trackTitle" class="track-title" data-translate="loading">Loading...</div>
                         <div id="trackArtist" class="track-artist"></div>
@@ -543,8 +453,7 @@
                     <div class="block-title" data-translate="prayer_times_header">Prayer Times</div>
                     <div class="block-content">
                         <div id="prayer-display">
-                            <p style="text-align:center; font-size:11px; color:#aaa;" data-translate="loading">
-                                Loading...</p>
+                            <p style="text-align:center; font-size:11px; color:#aaa;" data-translate="loading">Loading...</p>
                         </div>
                     </div>
                 </div>
@@ -552,8 +461,7 @@
                 <div class="side-block">
                     <div class="block-title" data-translate="date_header">Date</div>
                     <div class="block-content" style="text-align: center;">
-                        <div id="date-display-greg" style="font-weight: bold; color: #ffcc00; margin-bottom: 2px;">
-                        </div>
+                        <div id="date-display-greg" style="font-weight: bold; color: #ffcc00; margin-bottom: 2px;"></div>
                         <div id="date-display-hijri" style="font-size: 11px; color: #ccc;"></div>
                     </div>
                 </div>
@@ -580,64 +488,30 @@
     <script>
         const translations = {
             en: {
-                shabakat_nur: "Shabakat Nur",
-                slogan: "Latmiyas • Mawalid • Quran",
                 welcome_marquee: "Welcome to Shabakat Nur Radio – Streaming the Light of Faith 24/7 |  اللَّهُمَّ عَجِّل لِوَلِيِّكَ الْفَرَج | اللَّهُمَّ كُنْ لِوَلِيِّكَ الحُجَّةِ بْنِ الحَسَنِ صَلَواتُكَ عَلَيْهِ وَعَلى آبائِه فِي هذِهِ السّاعَةِ وَفِي كُلِّ ساعةٍ وَلِيّاً وَحافِظاً وَقائِداً وَناصِراً وَدَلِيلاً وَعَيْناً حَتّى تُسْكِنَهُ أَرْضَكَ طَوْعاً وَتُمَتِّعَهُ فِيْها طَوِيلاً",
-                menu_header: "Main Menu",
-                search_header: "Search",
-                newsletter_header: "Newsletter",
-                subscribe: "Subscribe",
-                search_btn: "Search",
-                prayer_times_header: "Prayer Times",
-                date_header: "Today's Date",
-                users_header: "Online Users",
-                guest_users: "Guests: 1",
-                home: "Home Page", schedule: "Schedule", contact: "Contact Us",
-                live_stream_header: "Live Stream",
-                play: "Play", stop: "Stop", loading: "Loading...",
-                about_header: "About Station",
-                about_text: "Shabakat Nur is a 24/7 online radio station dedicated to streaming the finest Latmiyas, Mawalid, and Quran recitations.",
-                features_header: "Broadcasts",
-                feature_1: "Exclusive Latmiyas", feature_2: "Live Mawalid", feature_3: "Daily Quran",
-                schedule_header: "Broadcast Schedule",
-                contact_header: "Contact Us",
-                email_header: "Email", social_header: "Social Media",
-                back_to_top: "Back to top",
-                imsak: "Imsak", fajr: "Fajr", dhuhr: "Dhuhr", maghrib: "Maghrib", sunrise: "Sunrise",
-                now_playing: "Now Playing",
-                lang: "Language",
-                newsletter_success: "Thanks for subscribing!",
-                newsletter_error: "Something went wrong. Try again."
+                menu_header: "Main Menu", search_header: "Search", newsletter_header: "Newsletter", subscribe: "Subscribe",
+                search_btn: "Search", prayer_times_header: "Prayer Times", date_header: "Today's Date",
+                users_header: "Online Users", home: "Home Page", schedule: "Schedule", contact: "Contact Us",
+                live_stream_header: "Live Stream", play: "Play", stop: "Stop", loading: "Loading...",
+                about_header: "About Station", about_text: "Shabakat Nur is a 24/7 online radio station dedicated to streaming the finest Latmiyas, Mawalid, and Quran recitations.",
+                features_header: "Broadcasts", feature_1: "Exclusive Latmiyas", feature_2: "Live Mawalid", feature_3: "Daily Quran",
+                schedule_header: "Broadcast Schedule", contact_header: "Contact Us", email_header: "Email",
+                social_header: "Social Media", back_to_top: "Back to top", imsak: "Imsak", fajr: "Fajr",
+                dhuhr: "Dhuhr", maghrib: "Maghrib", sunrise: "Sunrise", now_playing: "Now Playing",
+                lang: "Language", newsletter_success: "Thanks for subscribing!", newsletter_error: "Something went wrong. Try again."
             },
             ar: {
-                shabakat_nur: "شبكة نور",
-                slogan: "لطميات • مواليد • قرآن",
                 welcome_marquee: "أهلاً بكم في راديو شبكة نور - بث نور الإيمان ٧/٢٤ |  اللَّهُمَّ عَجِّل لِوَلِيِّكَ الْفَرَج | اللَّهُمَّ كُنْ لِوَلِيِّكَ الحُجَّةِ بْنِ الحَسَنِ صَلَواتُكَ عَلَيْهِ وَعَلى آبائِه فِي هذِهِ السّاعَةِ وَفِي كُلِّ ساعةٍ وَلِيّاً وَحافِظاً وَقائِداً وَناصِراً وَدَلِيلاً وَعَيْناً حَتّى تُسْكِنَهُ أَرْضَكَ طَوْعاً وَتُمَتِّعَهُ فِيْها طَوِيلاً",
-                menu_header: "القائمة الرئيسية",
-                search_header: "البحث",
-                newsletter_header: "القائمة البريدية",
-                subscribe: "إشتراك",
-                search_btn: "بحث",
-                prayer_times_header: "أوقات الصلاة",
-                date_header: "تاريخ اليوم",
-                users_header: "المتواجدون حالياً",
-                guest_users: "زوار: ١",
-                home: "الصفحة الرئيسية", schedule: "الجدول الزمني", contact: "إتصل بنا",
-                live_stream_header: "البث المباشر",
-                play: "تشغيل", stop: "إيقاف", loading: "جار التحميل...",
-                about_header: "عن الإذاعة",
-                about_text: "شبكة نور هي إذاعة إلكترونية تبث على مدار ٢٤ ساعة، مخصصة لنشر أجمل اللطميات والمواليد وتلاوات القرآن الكريم.",
-                features_header: "ماذا نبث",
-                feature_1: "لطميات حصرية", feature_2: "مواليد مباشرة", feature_3: "تلاوات يومية",
-                schedule_header: "جدول البث",
-                contact_header: "اتصل بنا",
-                email_header: "البريد الإلكتروني", social_header: "وسائل التواصل",
-                back_to_top: "العودة إلى الأعلى",
-                imsak: "الإمساك", fajr: "الفجر", dhuhr: "الظهرين", maghrib: "العشائين", sunrise: "الشروق",
-                now_playing: "يذاع الآن",
-                lang: "اللغة",
-                newsletter_success: "شكراً لاشتراكك!",
-                newsletter_error: "حدث خطأ ما. حاول مرة أخرى."
+                menu_header: "القائمة الرئيسية", search_header: "البحث", newsletter_header: "القائمة البريدية", subscribe: "إشتراك",
+                search_btn: "بحث", prayer_times_header: "أوقات الصلاة", date_header: "تاريخ اليوم",
+                users_header: "المتواجدون حالياً", home: "الصفحة الرئيسية", schedule: "الجدول الزمني", contact: "إتصل بنا",
+                live_stream_header: "البث المباشر", play: "تشغيل", stop: "إيقاف", loading: "جار التحميل...",
+                about_header: "عن الإذاعة", about_text: "شبكة نور هي إذاعة إلكترونية تبث على مدار ٢٤ ساعة، مخصصة لنشر أجمل اللطميات والمواليد وتلاوات القرآن الكريم.",
+                features_header: "ماذا نبث", feature_1: "لطميات حصرية", feature_2: "مواليد مباشرة", feature_3: "تلاوات يومية",
+                schedule_header: "جدول البث", contact_header: "اتصل بنا", email_header: "البريد الإلكتروني",
+                social_header: "وسائل التواصل", back_to_top: "العودة إلى الأعلى", imsak: "الإمساك", fajr: "الفجر",
+                dhuhr: "الظهرين", maghrib: "العشائين", sunrise: "الشروق", now_playing: "يذاع الآن",
+                lang: "اللغة", newsletter_success: "شكراً لاشتراكك!", newsletter_error: "حدث خطأ ما. حاول مرة أخرى."
             }
         };
 
@@ -678,25 +552,15 @@
                     const t = data.data.timings;
                     const d = data.data.date;
                     const lang = localStorage.getItem('language') || 'en';
-
-                    // --- GREGORIAN DATE LOGIC ---
                     let gregDateStr = "";
                     if (lang === 'ar') {
-                        // Create a date object to format nicely in Arabic (API format is DD-MM-YYYY)
                         const [day, month, year] = d.gregorian.date.split('-');
                         const dateObj = new Date(`${year}-${month}-${day}`);
                         gregDateStr = new Intl.DateTimeFormat('ar-BH', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(dateObj);
                     } else {
                         gregDateStr = `${d.gregorian.weekday.en}, ${d.gregorian.day} ${d.gregorian.month.en} ${d.gregorian.year}`;
                     }
-
-                    // --- HIJRI DATE LOGIC ---
-                    let hijriDateStr = "";
-                    if (lang === 'ar') {
-                        hijriDateStr = `${d.hijri.weekday.ar}، ${d.hijri.day} ${d.hijri.month.ar} ${d.hijri.year}`;
-                    } else {
-                        hijriDateStr = `${d.hijri.weekday.en}, ${d.hijri.day} ${d.hijri.month.en} ${d.hijri.year}`;
-                    }
+                    let hijriDateStr = lang === 'ar' ? `${d.hijri.weekday.ar}، ${d.hijri.day} ${d.hijri.month.ar} ${d.hijri.year}` : `${d.hijri.weekday.en}, ${d.hijri.day} ${d.hijri.month.en} ${d.hijri.year}`;
 
                     document.getElementById('date-display-greg').textContent = gregDateStr;
                     document.getElementById('date-display-hijri').textContent = hijriDateStr;
@@ -793,6 +657,4 @@
     </script>
 </body>
 
-
 </html>
-
