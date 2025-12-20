@@ -42,12 +42,15 @@
 
         /* UPDATED HEADER STYLES */
         .site-header {
-            background: #660000; /* Fallback color */
+            background: #660000;
+            /* Fallback color */
             border-bottom: 4px solid #ffcc00;
-            padding: 0; /* Removed padding to allow image to be flush */
+            padding: 0;
+            /* Removed padding to allow image to be flush */
             text-align: center;
             overflow: hidden;
-            line-height: 0; /* Removes small gap under image */
+            line-height: 0;
+            /* Removes small gap under image */
         }
 
         .site-banner {
@@ -81,13 +84,23 @@
         }
 
         @keyframes marquee-scroll {
-            from { transform: translateX(0%); }
-            to { transform: translateX(-200%); }
+            from {
+                transform: translateX(0%);
+            }
+
+            to {
+                transform: translateX(-200%);
+            }
         }
 
         @keyframes marquee-scroll-rtl {
-            from { transform: translateX(0%); }
-            to { transform: translateX(200%); }
+            from {
+                transform: translateX(0%);
+            }
+
+            to {
+                transform: translateX(200%);
+            }
         }
 
         .content-container {
@@ -256,8 +269,13 @@
         }
 
         @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .profile-pic img {
@@ -309,14 +327,30 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         @media (max-width: 900px) {
-            .content-container { flex-direction: column; }
-            .sidebar { width: 100%; order: 2; }
-            .center-column { width: 100%; order: 1; margin-bottom: 20px; }
+            .content-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+
+            .center-column {
+                width: 100%;
+                order: 1;
+                margin-bottom: 20px;
+            }
         }
 
         footer {
@@ -349,9 +383,12 @@
                     <div class="block-title" data-translate="menu_header">Main Menu</div>
                     <div class="block-content">
                         <ul class="nav-list">
-                            <li><a href="?page=home" class="nav-link" data-page="home" data-translate="home">Home Page</a></li>
-                            <li><a href="?page=schedule" class="nav-link" data-page="schedule" data-translate="schedule">Schedule</a></li>
-                            <li><a href="?page=contact" class="nav-link" data-page="contact" data-translate="contact">Contact Us</a></li>
+                            <li><a href="?page=home" class="nav-link" data-page="home" data-translate="home">Home
+                                    Page</a></li>
+                            <li><a href="?page=schedule" class="nav-link" data-page="schedule"
+                                    data-translate="schedule">Schedule</a></li>
+                            <li><a href="?page=contact" class="nav-link" data-page="contact"
+                                    data-translate="contact">Contact Us</a></li>
                         </ul>
                     </div>
                 </div>
@@ -360,10 +397,14 @@
                     <div class="block-title" data-translate="newsletter_header">Newsletter</div>
                     <form id="newsletter-form">
                         <div class="block-content" style="text-align: center;">
-                            <input type="email" class="input-field" name="fields[email]" placeholder="email@example.com" required>
-                            <button type="submit" class="btn" style="width: 100%;" data-translate="subscribe">Subscribe</button>
-                            <p class="newsletter-success" data-translate="newsletter_success" hidden>Thanks for subscribing!</p>
-                            <p class="newsletter-error" data-translate="newsletter_error" hidden>Something went wrong. Try again.</p>
+                            <input type="email" class="input-field" name="fields[email]" placeholder="email@example.com"
+                                required>
+                            <button type="submit" class="btn" style="width: 100%;"
+                                data-translate="subscribe">Subscribe</button>
+                            <p class="newsletter-success" data-translate="newsletter_success" hidden>Thanks for
+                                subscribing!</p>
+                            <p class="newsletter-error" data-translate="newsletter_error" hidden>Something went wrong.
+                                Try again.</p>
                         </div>
                     </form>
                 </div>
@@ -382,6 +423,7 @@
                         <select id="languageSelector" class="input-field">
                             <option value="en">English</option>
                             <option value="ar">العربية</option>
+                            <option value="fa">فارسی</option>
                         </select>
                     </div>
                 </div>
@@ -391,16 +433,19 @@
                 <div id="view-home" class="page-view active-view">
                     <div class="retro-card" style="text-align: center; overflow: visible;">
                         <h3 data-translate="live_stream_header">Live Stream</h3>
-                        <audio id="radioPlayer" src="https://albahrani.org/listen/shabakat_nur/SDradio.mp3" preload="auto"></audio>
+                        <audio id="radioPlayer" src="https://albahrani.org/listen/shabakat_nur/SDradio.mp3"
+                            preload="auto"></audio>
                         <div style="margin: 10px 0;">
                             <button id="playBtn" class="btn" data-translate="play">Play</button>
                             <button id="stopBtn" class="btn" data-translate="stop">Stop</button>
                             <button id="volUpBtn" class="btn">+</button>
                             <button id="volDownBtn" class="btn">−</button>
                         </div>
-                        <div id="playerStatus" style="font-size: 11px; color: #aaa; margin-bottom: 15px;">Status: Stopped</div>
+                        <div id="playerStatus" style="font-size: 11px; color: #aaa; margin-bottom: 15px;">Status:
+                            Stopped</div>
                         <div class="profile-pic">
-                            <img id="trackImage" src="https://albahrani.org/static/images/generic_album.jpg" alt="Album Art">
+                            <img id="trackImage" src="https://albahrani.org/static/images/generic_album.jpg"
+                                alt="Album Art">
                         </div>
                         <div id="trackTitle" class="track-title" data-translate="loading">Loading...</div>
                         <div id="trackArtist" class="track-artist"></div>
@@ -442,8 +487,8 @@
                             <a href="mailto:elyas@albahrani.org">elyas@albahrani.org</a>
                             <br><br>
                             <strong data-translate="social_header">Social:</strong><br>
-                            Twitter: @ShabakatNur
-                            Instagram: @ShabakatNur
+                            Twitter: @ShabakatNur<br>
+                            Instagram: @ShabakatNur<br>
                             Bluesky: @albahrani.org
                         </div>
                     </div>
@@ -455,7 +500,8 @@
                     <div class="block-title" data-translate="prayer_times_header">Prayer Times</div>
                     <div class="block-content">
                         <div id="prayer-display">
-                            <p style="text-align:center; font-size:11px; color:#aaa;" data-translate="loading">Loading...</p>
+                            <p style="text-align:center; font-size:11px; color:#aaa;" data-translate="loading">
+                                Loading...</p>
                         </div>
                     </div>
                 </div>
@@ -463,7 +509,8 @@
                 <div class="side-block">
                     <div class="block-title" data-translate="date_header">Date</div>
                     <div class="block-content" style="text-align: center;">
-                        <div id="date-display-greg" style="font-weight: bold; color: #ffcc00; margin-bottom: 2px;"></div>
+                        <div id="date-display-greg" style="font-weight: bold; color: #ffcc00; margin-bottom: 2px;">
+                        </div>
                         <div id="date-display-hijri" style="font-size: 11px; color: #ccc;"></div>
                     </div>
                 </div>
@@ -514,7 +561,21 @@
                 social_header: "وسائل التواصل", back_to_top: "العودة إلى الأعلى", imsak: "الإمساك", fajr: "الفجر",
                 dhuhr: "الظهرين", maghrib: "العشائين", sunrise: "الشروق", now_playing: "يذاع الآن",
                 lang: "اللغة", newsletter_success: "شكراً لاشتراكك!", newsletter_error: "حدث خطأ ما. حاول مرة أخرى."
+            },
+            fa: {
+                welcome_marquee: "به رادیو شبکه نور خوش آمدید – پخش نور ایمان به صورت ۲۴/۷ | اللَّهُمَّ عَجِّل لِوَلِيِّكَ الْفَرَج | اللَّهُمَّ كُنْ لِوَلِيِّكَ الحُجَّةِ بْنِ الحَسَنِ صَلَواتُكَ عَلَيْهِ وَعَلى آبائِه فِي هذِهِ السّاعَةِ وَفِي كُلِّ ساعةٍ وَلِيّاً وَحافِظاً وَقائِداً وَناصِراً وَدَلِيلاً وَعَيْناً حَتّى تُسْكِنَهُ أَرْضَكَ طَوْعاً وَتُمَتِّعَهُ فِيْها طَوِيلاً",
+                menu_header: "منوی اصلی", search_header: "جستجو", newsletter_header: "خبرنامه", subscribe: "اشتراک",
+                search_btn: "جستجو", prayer_times_header: "اوقات شرعی", date_header: "تاریخ امروز",
+                users_header: "کاربران آنلاین", home: "صفحه اصلی", schedule: "برنامه پخش", contact: "تماس با ما",
+                live_stream_header: "پخش زنده", play: "پخش", stop: "توقف", loading: "در حال بارگذاری...",
+                about_header: "درباره ایستگاه", about_text: "رادیو شبکه نور یک ایستگاه آنلاین ۲۴/۷ است که به پخش بهترین لتمیاها، مولودی‌ها و تلاوت‌های قرآن اختصاص دارد.",
+                features_header: "پخش‌ها", feature_1: "لتمیاهای اختصاصی", feature_2: "مولودی زنده", feature_3: "قرآن روزانه",
+                schedule_header: "برنامه پخش", contact_header: "تماس با ما", email_header: "ایمیل",
+                social_header: "شبکه‌های اجتماعی", back_to_top: "بازگشت به بالا", imsak: "امساک", fajr: "فجر",
+                dhuhr: "ظهر", maghrib: "مغرب", sunrise: "طلوع خورشید", now_playing: "در حال پخش",
+                lang: "زبان", newsletter_success: "با تشکر از اشتراک شما!", newsletter_error: "مشکلی پیش آمد. دوباره تلاش کنید."
             }
+
         };
 
         function getParameterByName(name) {
@@ -555,14 +616,16 @@
                     const d = data.data.date;
                     const lang = localStorage.getItem('language') || 'en';
                     let gregDateStr = "";
-                    if (lang === 'ar') {
+                    if (lang === 'ar' || lang === 'fa') {
                         const [day, month, year] = d.gregorian.date.split('-');
                         const dateObj = new Date(`${year}-${month}-${day}`);
                         gregDateStr = new Intl.DateTimeFormat('ar-BH', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(dateObj);
                     } else {
                         gregDateStr = `${d.gregorian.weekday.en}, ${d.gregorian.day} ${d.gregorian.month.en} ${d.gregorian.year}`;
                     }
-                    let hijriDateStr = lang === 'ar' ? `${d.hijri.weekday.ar}، ${d.hijri.day} ${d.hijri.month.ar} ${d.hijri.year}` : `${d.hijri.weekday.en}, ${d.hijri.day} ${d.hijri.month.en} ${d.hijri.year}`;
+                    let hijriDateStr = (lang === 'ar' || lang === 'fa')
+                        ? `${d.hijri.weekday.ar}، ${d.hijri.day} ${d.hijri.month.ar} ${d.hijri.year}`
+                        : `${d.hijri.weekday.en}, ${d.hijri.day} ${d.hijri.month.en} ${d.hijri.year}`;
 
                     document.getElementById('date-display-greg').textContent = gregDateStr;
                     document.getElementById('date-display-hijri').textContent = hijriDateStr;
@@ -630,7 +693,7 @@
         function setLanguage(lang) {
             localStorage.setItem('language', lang);
             document.documentElement.lang = lang;
-            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.dir = (lang === 'ar' || lang === 'fa') ? 'rtl' : 'ltr';
             document.querySelectorAll('[data-translate]').forEach(el => {
                 const key = el.getAttribute('data-translate');
                 if (translations[lang][key]) el.textContent = translations[lang][key];
