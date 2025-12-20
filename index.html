@@ -607,42 +607,81 @@
 
         window.addEventListener('popstate', () => renderPage(getParameterByName('page')));
 
+
+        const persianWeekdays = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'];
+        const persianMonths = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+
+        function gregorianToJalali(gy, gm, gd) {
+            var g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+            var jy = (gy <= 1600) ? 0 : 979;
+            gy -= (gy <= 1600) ? 621 : 1600;
+            var gy2 = (gm > 2) ? (gy + 1) : gy;
+            var days = 365 * gy + Math.floor((gy2 + 3) / 4) - Math.floor((gy2 + 99) / 100) + Math.floor((gy2 + 399) / 400) - 80 + gd + g_d_m[gm - 1];
+            jy += 33 * Math.floor(days / 12053);
+            days %= 12053;
+            jy += 4 * Math.floor(days / 1461);
+            days %= 1461;
+            if (days > 365) {
+                jy += Math.floor((days - 1) / 365);
+                days = (days - 1) % 365;
+            }
+            var jm = (days < 186) ? 1 + Math.floor(days / 31) : 7 + Math.floor((days - 186) / 30);
+            var jd = 1 + ((days < 186) ? (days % 31) : ((days - 186) % 30));
+            return [jy, jm, jd];
+        }
         async function fetchPrayerInfo() {
             try {
+                console.log("Fetching prayer info...");
                 const res = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Manama&country=Bahrain&method=0');
                 const data = await res.json();
-                if (data.code === 200) {
-                    const t = data.data.timings;
-                    const d = data.data.date;
-                    const lang = localStorage.getItem('language') || 'en';
-                    let gregDateStr = "";
-                    if (lang === 'ar' || lang === 'fa') {
-                        const [day, month, year] = d.gregorian.date.split('-');
-                        const dateObj = new Date(`${year}-${month}-${day}`);
-                        gregDateStr = new Intl.DateTimeFormat('ar-BH', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(dateObj);
-                    } else {
-                        gregDateStr = `${d.gregorian.weekday.en}, ${d.gregorian.day} ${d.gregorian.month.en} ${d.gregorian.year}`;
-                    }
-                    let hijriDateStr = (lang === 'ar' || lang === 'fa')
-                        ? `${d.hijri.weekday.ar}، ${d.hijri.day} ${d.hijri.month.ar} ${d.hijri.year}`
-                        : `${d.hijri.weekday.en}, ${d.hijri.day} ${d.hijri.month.en} ${d.hijri.year}`;
+                console.log("Raw API data:", data);
 
-                    document.getElementById('date-display-greg').textContent = gregDateStr;
-                    document.getElementById('date-display-hijri').textContent = hijriDateStr;
+                if (data.code !== 200) return;
 
-                    const labels = translations[lang];
-                    const html = `
-                        <table class="prayer-table">
-                            <tr><td>${labels.fajr}</td><td>${t.Fajr}</td></tr>
-                            <tr><td>${labels.sunrise}</td><td>${t.Sunrise}</td></tr>
-                            <tr><td>${labels.dhuhr}</td><td>${t.Dhuhr}</td></tr>
-                            <tr><td>${labels.maghrib}</td><td>${t.Maghrib}</td></tr>
-                        </table>
-                        <div style="text-align:center; margin-top:5px; font-size:10px; color:#888;">Manama, Bahrain</div>
-                    `;
-                    document.getElementById('prayer-display').innerHTML = html;
+                const t = data.data.timings;
+                const d = data.data.date;
+                const lang = localStorage.getItem('language') || 'en';
+                console.log("Language:", lang);
+
+                let gregDateStr = "";
+
+                if (lang === 'fa') {
+                    const [day, month, year] = d.gregorian.date.split('-').map(Number);
+                    const [jy, jm, jd] = gregorianToJalali(year, month, day);
+                    const weekdayIndex = new Date(year, month - 1, day).getDay();
+                    gregDateStr = `${persianWeekdays[weekdayIndex]}، ${jd} ${persianMonths[jm - 1]} ${jy}`;
+                } else if (lang === 'ar') {
+                    const [day, month, year] = d.gregorian.date.split('-');
+                    const dateObj = new Date(`${year}-${month}-${day}`);
+                    gregDateStr = new Intl.DateTimeFormat('ar-BH', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(dateObj);
+                } else {
+                    gregDateStr = `${d.gregorian.weekday.en}, ${d.gregorian.day} ${d.gregorian.month.en} ${d.gregorian.year}`;
                 }
-            } catch (e) { console.error(e); }
+                console.log("Gregorian display string:", gregDateStr);
+
+                const hijriDateStr = (lang === 'ar' || lang === 'fa')
+                    ? `${d.hijri.weekday.ar}، ${d.hijri.day} ${d.hijri.month.ar} ${d.hijri.year}`
+                    : `${d.hijri.weekday.en}, ${d.hijri.day} ${d.hijri.month.en} ${d.hijri.year}`;
+                console.log("Hijri display string:", hijriDateStr);
+
+                document.getElementById('date-display-greg').textContent = gregDateStr;
+                document.getElementById('date-display-hijri').textContent = hijriDateStr;
+
+                const labels = translations[lang];
+                const html = `
+            <table class="prayer-table">
+                <tr><td>${labels.fajr}</td><td>${t.Fajr}</td></tr>
+                <tr><td>${labels.sunrise}</td><td>${t.Sunrise}</td></tr>
+                <tr><td>${labels.dhuhr}</td><td>${t.Dhuhr}</td></tr>
+                <tr><td>${labels.maghrib}</td><td>${t.Maghrib}</td></tr>
+            </table>
+            <div style="text-align:center; margin-top:5px; font-size:10px; color:#888;">Manama, Bahrain</div>
+        `;
+                document.getElementById('prayer-display').innerHTML = html;
+
+            } catch (e) {
+                console.error("Error fetching prayer info:", e);
+            }
         }
 
         const player = document.getElementById("radioPlayer");
