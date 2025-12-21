@@ -738,7 +738,7 @@
                 if (translations[lang][key]) el.textContent = translations[lang][key];
             });
             const marq = document.getElementById('marquee-content');
-            if (lang === 'ar') marq.classList.add('rtl'); else marq.classList.remove('rtl');
+            if (lang === 'ar' || lang === 'fa') marq.classList.add('rtl'); else marq.classList.remove('rtl');
             fetchPrayerInfo();
             if (getParameterByName('page') === 'schedule') loadSchedule();
         }
