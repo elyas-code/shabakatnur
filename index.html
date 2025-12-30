@@ -83,6 +83,41 @@
             animation-name: marquee-scroll-rtl;
         }
 
+        .content-dialog {
+            width: min(900px, 95vw);
+            max-height: 90vh;
+            border: none;
+            border-radius: 12px;
+            padding: 0;
+            background: #0e0e0e;
+            color: #eee;
+        }
+
+        .content-dialog::backdrop {
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .dialog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #222;
+        }
+
+        .dialog-header button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        #dialog-body {
+            padding: 1.25rem;
+            overflow-y: auto;
+        }
+
         @keyframes marquee-scroll {
             from {
                 transform: translateX(0%);
@@ -353,6 +388,39 @@
             }
         }
 
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .category-card {
+            background: linear-gradient(to bottom, #2a2a2a, #1a1a1a);
+            border: 2px outset #555;
+            padding: 8px 10px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            font-size: 13px;
+            color: #ffcc00;
+            transition: all 0.15s ease;
+        }
+
+        .category-card:hover {
+            background: linear-gradient(to bottom, #333, #222);
+        }
+
+        .category-card.active {
+            background: linear-gradient(to bottom, #990000, #660000);
+            color: #fff;
+            border-color: #ffcc00;
+        }
+
+        html[dir='rtl'] .category-card {
+            text-align: center;
+        }
+
         footer {
             background: linear-gradient(to top, #660000, #990000);
             border-top: 3px solid #ffcc00;
@@ -362,6 +430,12 @@
             margin-top: auto;
             width: 100%;
         }
+
+        @media (max-width: 768px) {
+            iframe {
+                height: 60vh;
+            }
+        }
     </style>
 </head>
 
@@ -369,7 +443,6 @@
 
     <div class="page-wrapper">
         <header class="site-header">
-            <!-- REPLACED TEXT WITH IMAGE -->
             <img src="banner.jpeg" alt="Shabakat Nur Radio Banner" class="site-banner">
         </header>
 
@@ -387,6 +460,10 @@
                                     Page</a></li>
                             <li><a href="?page=schedule" class="nav-link" data-page="schedule"
                                     data-translate="schedule">Schedule</a></li>
+                            <li><a href="?page=lyrics" class="nav-link" data-page="lyrics"
+                                    data-translate="lyrics">Lyrics</a></li>
+                            <li><a href="?page=resources" class="nav-link" data-page="resources"
+                                    data-translate="resources">Resources</a></li>
                             <li><a href="?page=contact" class="nav-link" data-page="contact"
                                     data-translate="contact">Contact Us</a></li>
                         </ul>
@@ -479,6 +556,26 @@
                     </div>
                 </div>
 
+                <div id="view-lyrics" class="page-view">
+                    <div class="retro-card">
+                        <h3 data-translate="lyrics_header"></h3>
+
+                        <div id="lyrics-categories" class="category-grid"></div>
+                        <div id="lyrics-list"></div>
+                        <div id="lyrics-content"></div>
+                    </div>
+                </div>
+
+                <div id="view-resources" class="page-view">
+                    <div class="retro-card">
+                        <h3 data-translate="resources_header">Learning Resources</h3>
+
+                        <div id="resources-categories" class="category-grid"></div>
+                        <div id="resources-list"></div>
+                        <div id="resources-content"></div>
+                    </div>
+                </div>
+
                 <div id="view-contact" class="page-view">
                     <div class="retro-card">
                         <h3 data-translate="contact_header">Contact Us</h3>
@@ -533,14 +630,130 @@
             <p><a href="#" id="scrollTopBtn" data-translate="back_to_top">Back to top</a></p>
         </footer>
     </div>
-
+    <dialog id="content-dialog" class="content-dialog">
+        <div class="dialog-header">
+            <h3 id="dialog-title"></h3>
+            <button id="dialog-close">✕</button>
+        </div>
+        <div id="dialog-body"></div>
+    </dialog>
     <script>
+        const libraries = {
+            lyrics: {
+                categories: {
+                    iran: {
+                        title: { en: "Iran", ar: "إيران", fa: "ایران" }
+                    },
+                    iraq: {
+                        title: { en: "Iraq", ar: "العراق", fa: "عراق" }
+                    },
+                    bahrain: {
+                        title: { en: "Bahrain", ar: "البحرين", fa: "بحرین" }
+                    }
+                },
+                items: [
+                    {
+                        id: "salam_farmandeh",
+                        category: "iran",
+                        title: {
+                            en: "Salam Farmandeh",
+                            ar: "سلام فرمانده",
+                            fa: "سلام فرمانده"
+                        },
+                        type: "text",
+                        content: `
+عشق جانم امام زمانم، دنيا بدون تو معنايي نداره
+عشق روزگارم وقتي كه تو باشي دنيامون بهاره
+سلام فرمانده، سلام از اين نسل غيور جامانده
+سلام فرمانده، سيد علي دهه‌ نودي‌‌هاشو فراخوانده
+
+سلام فرمانده، بيا جون من بيا، بيا يارت ميشم
+هوادارت ميشم، گرفتارت ميشم، علي بن مهزيارت ميشم
+با همين قد كوچيكم خودم، سردارت ميشم
+نبين قدم كوچيكه، پاش بيفته من برات قيام ميكنم
+نبين قدم كوچيكه، مثل ميرزا كوچك كار و تمام ميكنم
+نبين قدم كوچيكه، از صف سيصد و سيزده تا بهت سلام ميكنم
+
+نبين كمه سنم، تو فقط صِدام بزن ببين چيكار برات ميكنم
+نبين كمه سنم، با همين دستاي كوچيكم همش دُعات ميكنم
+نبين كمه سنم، بأبي انت و أمي همه رو فدات ميكنم
+
+عهد ميبندم، روزي لازمت بشم، عهد ميبندم حاج قاسمت بشم
+عـهد ميبندم، مثل بهجت و مثل سربازاي گمنام خادمت بشم
+عهد ميبندم كه ميمونم، پاي كار اين نظام
+كاشكي مثل حاج قاسم، من به چشم تو بيام
+
+هزار و صد و اندي ساله، همه عالم دنبال مهدي اند
+غصه سرباز و نخور آقا، سربازات هزار و چهارصدي اند`
+                    }
+                ]
+            },
+
+            resources: {
+                categories: {
+                    poetry: {
+                        title: { en: "Poetry", ar: "الشعر", fa: "شعر" }
+                    },
+                    recitation: {
+                        title: { en: "Recitation", ar: "الإلقاء", fa: "نوحه خوانی" }
+                    },
+
+                    fiqh: {
+                        title: { en: "Fiqh", ar: "الفقه", fa: "فقه" }
+                    }
+                },
+                items: [
+                    {
+                        id: "arabic_prosody",
+                        category: "poetry",
+                        title: {
+                            en: "Arabic Prosody",
+                            ar: "أساسيات العروض",
+                            fa: "مبانی عروض عربی"
+                        },
+                        type: "text",
+                        content: {
+                            en: `
+Poetry is built on meters.
+Each meter has rhythm.
+    `,
+                            ar: `
+الشعر يقوم على الأوزان.
+    `                        }
+                    },
+                    {
+                        id: "albayan-fi-alshi3r",
+                        category: "poetry",
+                        title: {
+                            en: "Expression in Husayni Poetry",
+                            ar: "البيان في الشعر الحسيني",
+                            fa: "بیان در شعر حسینی"
+                        },
+                        type: "pdf",
+                        file: "/pdf/poetry/bayan-fi-shi3r-hussaini.pdf"
+                    },
+                    {
+                        id: "fiqh_research",
+                        category: "fiqh",
+                        title: {
+                            en: "Research in Islamic jurisprudence, general discussions on contracts (contract theory in Islamic jurisprudence)",
+                            ar: "مدخل إلى بحوث في الفقه، مباحث عامة حول العقد (نظرية العقد في الفقه الإسلامي)",
+                            fa: "پژوهش در فقه اسلامی، مباحث کلی در باب قراردادها (نظریه قرارداد در فقه اسلامی)"
+                        },
+                        type: "pdf",
+                        file: "/pdf/fiqh/research-in-islamic-jurispudence.pdf"
+                    }
+                ]
+            }
+        };
+
         const translations = {
             en: {
                 welcome_marquee: "Welcome to Shabakat Nur Radio – Streaming the Light of Faith 24/7 |  اللَّهُمَّ عَجِّل لِوَلِيِّكَ الْفَرَج | اللَّهُمَّ كُنْ لِوَلِيِّكَ الحُجَّةِ بْنِ الحَسَنِ صَلَواتُكَ عَلَيْهِ وَعَلى آبائِه فِي هذِهِ السّاعَةِ وَفِي كُلِّ ساعةٍ وَلِيّاً وَحافِظاً وَقائِداً وَناصِراً وَدَلِيلاً وَعَيْناً حَتّى تُسْكِنَهُ أَرْضَكَ طَوْعاً وَتُمَتِّعَهُ فِيْها طَوِيلاً",
                 menu_header: "Main Menu", search_header: "Search", newsletter_header: "Newsletter", subscribe: "Subscribe",
                 search_btn: "Search", prayer_times_header: "Prayer Times", date_header: "Today's Date",
                 users_header: "Online Users", home: "Home Page", schedule: "Schedule", contact: "Contact Us",
+                lyrics: "Lyrics", resources: "Resources", lyrics_header: "Lyrics Library", resources_header: "Learning Resources",
                 live_stream_header: "Live Stream", play: "Play", stop: "Stop", loading: "Loading...",
                 about_header: "About Station", about_text: "Shabakat Nur is a 24/7 online radio station dedicated to streaming the finest Latmiyas, Mawalid, and Quran recitations.",
                 features_header: "Broadcasts", feature_1: "Exclusive Latmiyas", feature_2: "Live Mawalid", feature_3: "Daily Quran",
@@ -554,6 +767,7 @@
                 menu_header: "القائمة الرئيسية", search_header: "البحث", newsletter_header: "القائمة البريدية", subscribe: "إشتراك",
                 search_btn: "بحث", prayer_times_header: "أوقات الصلاة", date_header: "تاريخ اليوم",
                 users_header: "المتواجدون حالياً", home: "الصفحة الرئيسية", schedule: "الجدول الزمني", contact: "إتصل بنا",
+                lyrics: "القصائد", resources: "المصادر", lyrics_header: "مكتبة القصائد", resources_header: "المصادر التعليمية",
                 live_stream_header: "البث المباشر", play: "تشغيل", stop: "إيقاف", loading: "جار التحميل...",
                 about_header: "عن الإذاعة", about_text: "شبكة نور هي إذاعة إلكترونية تبث على مدار ٢٤ ساعة، مخصصة لنشر أجمل اللطميات والمواليد وتلاوات القرآن الكريم.",
                 features_header: "ماذا نبث", feature_1: "لطميات حصرية", feature_2: "مواليد مباشرة", feature_3: "تلاوات يومية",
@@ -567,6 +781,7 @@
                 menu_header: "منوی اصلی", search_header: "جستجو", newsletter_header: "خبرنامه", subscribe: "اشتراک",
                 search_btn: "جستجو", prayer_times_header: "اوقات شرعی", date_header: "تاریخ امروز",
                 users_header: "کاربران آنلاین", home: "صفحه اصلی", schedule: "برنامه پخش", contact: "تماس با ما",
+                lyrics: "متن نوحه", resources: "منابع آموزشی", lyrics_header: "کتابخانه متن", resources_header: "منابع آموزشی",
                 live_stream_header: "پخش زنده", play: "پخش", stop: "توقف", loading: "در حال بارگذاری...",
                 about_header: "درباره ایستگاه", about_text: "رادیو شبکه نور یک ایستگاه آنلاین ۲۴/۷ است که به پخش بهترین لتمیاها، مولودی‌ها و تلاوت‌های قرآن اختصاص دارد.",
                 features_header: "پخش‌ها", feature_1: "لتمیاهای اختصاصی", feature_2: "مولودی زنده", feature_3: "قرآن روزانه",
@@ -578,17 +793,117 @@
 
         };
 
+        const dialog = document.getElementById("content-dialog");
+        const dialogTitle = document.getElementById("dialog-title");
+        const dialogBody = document.getElementById("dialog-body");
+
+        document.getElementById("dialog-close").onclick = () => dialog.close();
+
+        function renderLibrary({ libraryKey, categoriesEl, listEl, contentEl }) {
+            const lang = localStorage.getItem("language") || "en";
+            const lib = libraries[libraryKey];
+
+            // categories
+            categoriesEl.innerHTML = Object.entries(lib.categories)
+                .map(([key, cat]) => `
+      <div class="category-card" data-cat="${key}">
+        <h4>${cat.title[lang]}</h4>
+      </div>
+    `).join("");
+
+            categoriesEl.onclick = e => {
+                const card = e.target.closest(".category-card");
+                if (!card) return;
+
+                categoriesEl.querySelectorAll(".category-card")
+                    .forEach(c => c.classList.remove("active"));
+                card.classList.add("active");
+
+                const cat = card.dataset.cat;
+                const items = lib.items.filter(i => i.category === cat);
+
+                listEl.innerHTML = items.map(i => `
+    <div class="retro-card" data-id="${i.id}" style="cursor:pointer">
+      ${i.title[lang]}
+    </div>
+  `).join("");
+            };
+            const first = categoriesEl.querySelector(".category-card");
+            if (first) first.click();
+
+            listEl.onclick = e => {
+                const card = e.target.closest("[data-id]");
+                if (!card) return;
+
+                const lang = localStorage.getItem("language") || "en";
+                const item = lib.items.find(i => i.id === card.dataset.id);
+
+                dialogTitle.textContent = item.title[lang];
+
+                if (item.type === "pdf") {
+                    dialogBody.innerHTML = `
+      <iframe src="${item.file}"
+              style="width:100%;height:70vh;border:none;background:#111">
+      </iframe>
+    `;
+                } else {
+                    let text = "";
+
+                    if (typeof item.content === "string") {
+                        text = item.content;
+                    } else {
+                        text = item.content?.[lang] || "";
+                    }
+                    dialogBody.innerHTML = `
+      <div style="white-space:pre-wrap;line-height:1.9;font-size:1.05rem">
+        ${text}
+      </div>
+    `;
+                }
+
+                dialog.showModal();
+            };
+        }
+
+        function loadLibraries() {
+            renderLibrary({
+                libraryKey: "lyrics",
+                categoriesEl: document.getElementById("lyrics-categories"),
+                listEl: document.getElementById("lyrics-list"),
+                contentEl: document.getElementById("lyrics-content")
+            });
+
+            renderLibrary({
+                libraryKey: "resources",
+                categoriesEl: document.getElementById("resources-categories"),
+                listEl: document.getElementById("resources-list"),
+                contentEl: document.getElementById("resources-content")
+            });
+
+            if (document.getElementById("view-lyrics").classList.contains("active-view")) {
+                renderLibrary({
+                    libraryKey: "lyrics",
+                    categoriesEl: lyricsCategories,
+                    listEl: lyricsList,
+                    contentEl: lyricsContent
+                });
+            }
+        }
+        loadLibraries();
+
         function getParameterByName(name) {
             const url = new URL(window.location.href);
             return url.searchParams.get(name) || 'home';
         }
 
         function renderPage(pageName) {
-            const validPages = ['home', 'schedule', 'contact'];
+            const validPages = ['home', 'schedule', 'contact', 'lyrics', 'resources'];
             if (!validPages.includes(pageName)) pageName = 'home';
+
             document.querySelectorAll('.page-view').forEach(view => view.classList.remove('active-view'));
             const target = document.getElementById(`view-${pageName}`);
             if (target) target.classList.add('active-view');
+
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('data-page') === pageName) link.classList.add('active');
@@ -741,6 +1056,7 @@
             if (lang === 'ar' || lang === 'fa') marq.classList.add('rtl'); else marq.classList.remove('rtl');
             fetchPrayerInfo();
             if (getParameterByName('page') === 'schedule') loadSchedule();
+            loadLibraries();
         }
 
         document.getElementById('languageSelector').addEventListener('change', (e) => setLanguage(e.target.value));
@@ -759,6 +1075,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
+
 </body>
 
 </html>
