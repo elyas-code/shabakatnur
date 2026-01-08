@@ -489,8 +489,9 @@
                 <div class="side-block">
                     <div class="block-title" data-translate="search_header">Search</div>
                     <div class="block-content">
-                        <input type="text" class="input-field" placeholder="...">
-                        <button class="btn" style="width: 100%;" data-translate="search_btn">Search</button>
+                        <input id="searchInput" type="text" class="input-field" placeholder="...">
+                        <button id="searchBtn" class="btn" style="width: 100%;"
+                            data-translate="search_btn">Search</button>
                     </div>
                 </div>
 
@@ -551,6 +552,14 @@
                     <div class="retro-card">
                         <h3 data-translate="schedule_header">Broadcast Schedule</h3>
                         <div id="schedule-list" style="padding: 10px;">
+                            <p data-translate="loading">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="view-search" class="page-view">
+                    <div class="retro-card">
+                        <h3 data-translate="search_header">Search</h3>
+                        <div id="search-results" style="margin-top:10px;">
                             <p data-translate="loading">Loading...</p>
                         </div>
                     </div>
@@ -760,7 +769,7 @@ Each meter has rhythm.
                 schedule_header: "Broadcast Schedule", contact_header: "Contact Us", email_header: "Email",
                 social_header: "Social Media", back_to_top: "Back to top", imsak: "Imsak", fajr: "Fajr",
                 dhuhr: "Dhuhr", maghrib: "Maghrib", sunrise: "Sunrise", now_playing: "Now Playing",
-                lang: "Language", newsletter_success: "Thanks for subscribing!", newsletter_error: "Something went wrong. Try again."
+                lang: "Language", newsletter_success: "Thanks for subscribing!", newsletter_error: "Something went wrong. Try again.", no_results: "No results found."
             },
             ar: {
                 welcome_marquee: "أهلاً بكم في راديو شبكة نور - بث نور الإيمان ٧/٢٤ |  اللَّهُمَّ عَجِّل لِوَلِيِّكَ الْفَرَج | اللَّهُمَّ كُنْ لِوَلِيِّكَ الحُجَّةِ بْنِ الحَسَنِ صَلَواتُكَ عَلَيْهِ وَعَلى آبائِه فِي هذِهِ السّاعَةِ وَفِي كُلِّ ساعةٍ وَلِيّاً وَحافِظاً وَقائِداً وَناصِراً وَدَلِيلاً وَعَيْناً حَتّى تُسْكِنَهُ أَرْضَكَ طَوْعاً وَتُمَتِّعَهُ فِيْها طَوِيلاً",
@@ -774,7 +783,7 @@ Each meter has rhythm.
                 schedule_header: "جدول البث", contact_header: "اتصل بنا", email_header: "البريد الإلكتروني",
                 social_header: "وسائل التواصل", back_to_top: "العودة إلى الأعلى", imsak: "الإمساك", fajr: "الفجر",
                 dhuhr: "الظهرين", maghrib: "العشائين", sunrise: "الشروق", now_playing: "يذاع الآن",
-                lang: "اللغة", newsletter_success: "شكراً لاشتراكك!", newsletter_error: "حدث خطأ ما. حاول مرة أخرى."
+                lang: "اللغة", newsletter_success: "شكراً لاشتراكك!", newsletter_error: "حدث خطأ ما. حاول مرة أخرى.", no_results: "لم يتم العثور على نتائج."
             },
             fa: {
                 welcome_marquee: "به رادیو شبکه نور خوش آمدید – پخش نور ایمان به صورت ۲۴/۷ | اللَّهُمَّ عَجِّل لِوَلِيِّكَ الْفَرَج | اللَّهُمَّ كُنْ لِوَلِيِّكَ الحُجَّةِ بْنِ الحَسَنِ صَلَواتُكَ عَلَيْهِ وَعَلى آبائِه فِي هذِهِ السّاعَةِ وَفِي كُلِّ ساعةٍ وَلِيّاً وَحافِظاً وَقائِداً وَناصِراً وَدَلِيلاً وَعَيْناً حَتّى تُسْكِنَهُ أَرْضَكَ طَوْعاً وَتُمَتِّعَهُ فِيْها طَوِيلاً",
@@ -788,7 +797,7 @@ Each meter has rhythm.
                 schedule_header: "برنامه پخش", contact_header: "تماس با ما", email_header: "ایمیل",
                 social_header: "شبکه‌های اجتماعی", back_to_top: "بازگشت به بالا", imsak: "امساک", fajr: "فجر",
                 dhuhr: "ظهر", maghrib: "مغرب", sunrise: "طلوع خورشید", now_playing: "در حال پخش",
-                lang: "زبان", newsletter_success: "با تشکر از اشتراک شما!", newsletter_error: "مشکلی پیش آمد. دوباره تلاش کنید."
+                lang: "زبان", newsletter_success: "با تشکر از اشتراک شما!", newsletter_error: "مشکلی پیش آمد. دوباره تلاش کنید.", no_results: "نتیجه‌ای یافت نشد."
             }
 
         };
@@ -897,7 +906,7 @@ Each meter has rhythm.
         }
 
         function renderPage(pageName) {
-            const validPages = ['home', 'schedule', 'contact', 'lyrics', 'resources'];
+            const validPages = ['home', 'schedule', 'contact', 'lyrics', 'resources', 'search'];
             if (!validPages.includes(pageName)) pageName = 'home';
 
             document.querySelectorAll('.page-view').forEach(view => view.classList.remove('active-view'));
@@ -909,7 +918,24 @@ Each meter has rhythm.
                 if (link.getAttribute('data-page') === pageName) link.classList.add('active');
             });
             if (pageName === 'schedule') loadSchedule();
+            if (pageName === 'search') {
+                const q = getParameterByName('q');
+                renderSearchPage(q);
+            }
+
         }
+        document.getElementById("searchBtn").addEventListener("click", () => {
+            const q = document.getElementById("searchInput").value.trim();
+            if (!q) return;
+
+            window.history.pushState(
+                {},
+                "",
+                `?page=search&q=${encodeURIComponent(q)}`
+            );
+
+            renderPage("search");
+        });
 
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
@@ -1057,6 +1083,84 @@ Each meter has rhythm.
             fetchPrayerInfo();
             if (getParameterByName('page') === 'schedule') loadSchedule();
             loadLibraries();
+        }
+        function searchLibraries(query) {
+            const lang = localStorage.getItem("language") || "en";
+            const results = [];
+
+            Object.entries(libraries).forEach(([libKey, lib]) => {
+                lib.items.forEach(item => {
+                    let haystack = "";
+
+                    // title
+                    haystack += item.title?.[lang] || "";
+
+                    // content
+                    if (typeof item.content === "string") {
+                        haystack += item.content;
+                    } else if (item.content?.[lang]) {
+                        haystack += item.content[lang];
+                    }
+
+                    if (haystack.toLowerCase().includes(query.toLowerCase())) {
+                        results.push({ ...item, library: libKey });
+                    }
+                });
+            });
+
+            return results;
+        }
+        function renderSearchPage(query) {
+            const container = document.getElementById("search-results");
+            container.innerHTML = "";
+
+            if (!query) {
+                container.innerHTML = "<p>No search query.</p>";
+                return;
+            }
+
+            const results = searchLibraries(query);
+
+            if (!results.length) {
+                container.innerHTML = `
+        <p data-translate="no_results">
+            ${translations[localStorage.getItem("language") || "en"].no_results}
+        </p>
+    `;
+                return;
+            }
+
+
+            results.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "retro-card";
+                card.style.cursor = "pointer";
+                card.textContent = item.title[localStorage.getItem("language") || "en"];
+
+                card.onclick = () => {
+                    dialogTitle.textContent = item.title[localStorage.getItem("language") || "en"];
+
+                    if (item.type === "pdf") {
+                        dialogBody.innerHTML = `
+                    <iframe src="${item.file}" style="width:100%;height:70vh;border:none"></iframe>
+                `;
+                    } else {
+                        const text = typeof item.content === "string"
+                            ? item.content
+                            : item.content?.[localStorage.getItem("language") || "en"] || "";
+
+                        dialogBody.innerHTML = `
+                    <div style="white-space:pre-wrap;line-height:1.9;font-size:1.05rem">
+                        ${text}
+                    </div>
+                `;
+                    }
+
+                    dialog.showModal();
+                };
+
+                container.appendChild(card);
+            });
         }
 
         document.getElementById('languageSelector').addEventListener('change', (e) => setLanguage(e.target.value));
