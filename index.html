@@ -520,11 +520,13 @@
                         <div style="margin: 10px 0;">
                             <button id="playBtn" class="btn" data-translate="play">Play</button>
                             <button id="stopBtn" class="btn" data-translate="stop">Stop</button>
-                            <button id="volUpBtn" class="btn">+</button>
-                            <button id="volDownBtn" class="btn">−</button>
                         </div>
-                        <div id="playerStatus" style="font-size: 11px; color: #aaa; margin-bottom: 15px;">Status:
-                            Stopped</div>
+                        <div style="margin: 10px 0; display: flex; align-items: center; gap: 10px;">
+                            <label for="volumeSlider" style="font-size: 12px;" data-translate="volume">Volume:</label>
+                            <input id="volumeSlider" type="range" min="0" max="100" value="50" style="flex: 1; cursor: pointer;">
+                            <span id="volumeValue" style="font-size: 12px; width: 30px;">50%</span>
+                        </div>
+                        <div id="playerStatus" style="font-size: 11px; color: #aaa; margin-bottom: 15px;" data-translate="status_stopped">Status: Stopped</div>
                         <div class="profile-pic">
                             <img id="trackImage" src="https://albahrani.org/static/images/generic_album.jpg"
                                 alt="Album Art">
@@ -773,7 +775,7 @@ Each meter has rhythm.
                 schedule_header: "Broadcast Schedule", contact_header: "Contact Us", email_header: "Email",
                 social_header: "Social Media", back_to_top: "Back to top", imsak: "Imsak", fajr: "Fajr",
                 dhuhr: "Dhuhr", maghrib: "Maghrib", sunrise: "Sunrise", now_playing: "Now Playing",
-                lang: "Language", newsletter_success: "Thanks for subscribing!", newsletter_error: "Something went wrong. Try again.", no_results: "No results found.", migration_warning: "Attention! Server is experiencing scheduled downtime."
+                lang: "Language", newsletter_success: "Thanks for subscribing!", newsletter_error: "Something went wrong. Try again.", no_results: "No results found.", migration_warning: "Attention! Server is experiencing scheduled downtime.", volume: "Volume", status_playing: "Status: Playing", status_stopped: "Status: Stopped"
             },
             ar: {
                 welcome_marquee: "أهلاً بكم في راديو شبكة نور - بث نور الإيمان ٧/٢٤ |  اللَّهُمَّ عَجِّل لِوَلِيِّكَ الْفَرَج | اللَّهُمَّ كُنْ لِوَلِيِّكَ الحُجَّةِ بْنِ الحَسَنِ صَلَواتُكَ عَلَيْهِ وَعَلى آبائِه فِي هذِهِ السّاعَةِ وَفِي كُلِّ ساعةٍ وَلِيّاً وَحافِظاً وَقائِداً وَناصِراً وَدَلِيلاً وَعَيْناً حَتّى تُسْكِنَهُ أَرْضَكَ طَوْعاً وَتُمَتِّعَهُ فِيْها طَوِيلاً",
@@ -787,7 +789,7 @@ Each meter has rhythm.
                 schedule_header: "جدول البث", contact_header: "اتصل بنا", email_header: "البريد الإلكتروني",
                 social_header: "وسائل التواصل", back_to_top: "العودة إلى الأعلى", imsak: "الإمساك", fajr: "الفجر",
                 dhuhr: "الظهرين", maghrib: "العشائين", sunrise: "الشروق", now_playing: "يذاع الآن",
-                lang: "اللغة", newsletter_success: "شكراً لاشتراكك!", newsletter_error: "حدث خطأ ما. حاول مرة أخرى.", no_results: "لم يتم العثور على نتائج.", migration_warning: "تنبيه! الخادم يخضع لتوقف مجدول حالياً."
+                lang: "اللغة", newsletter_success: "شكراً لاشتراكك!", newsletter_error: "حدث خطأ ما. حاول مرة أخرى.", no_results: "لم يتم العثور على نتائج.", migration_warning: "تنبيه! الخادم يخضع لتوقف مجدول حالياً.", volume: "مستوى الصوت", status_playing: "الحالة: يتم التشغيل", status_stopped: "الحالة: متوقف"
             },
             fa: {
                 welcome_marquee: "به رادیو شبکه نور خوش آمدید – پخش نور ایمان به صورت ۲۴/۷ | اللَّهُمَّ عَجِّل لِوَلِيِّكَ الْفَرَج | اللَّهُمَّ كُنْ لِوَلِيِّكَ الحُجَّةِ بْنِ الحَسَنِ صَلَواتُكَ عَلَيْهِ وَعَلى آبائِه فِي هذِهِ السّاعَةِ وَفِي كُلِّ ساعةٍ وَلِيّاً وَحافِظاً وَقائِداً وَناصِراً وَدَلِيلاً وَعَيْناً حَتّى تُسْكِنَهُ أَرْضَكَ طَوْعاً وَتُمَتِّعَهُ فِيْها طَوِيلاً",
@@ -801,7 +803,7 @@ Each meter has rhythm.
                 schedule_header: "برنامه پخش", contact_header: "تماس با ما", email_header: "ایمیل",
                 social_header: "شبکه‌های اجتماعی", back_to_top: "بازگشت به بالا", imsak: "امساک", fajr: "فجر",
                 dhuhr: "ظهر", maghrib: "مغرب", sunrise: "طلوع خورشید", now_playing: "در حال پخش",
-                lang: "زبان", newsletter_success: "با تشکر از اشتراک شما!", newsletter_error: "مشکلی پیش آمد. دوباره تلاش کنید.", no_results: "نتیجه‌ای یافت نشد.", migration_warning: "توجه! سرور در حال گذراندن زمان‌بندی توقف موقت است."
+                lang: "زبان", newsletter_success: "با تشکر از اشتراک شما!", newsletter_error: "مشکلی پیش آمد. دوباره تلاش کنید.", no_results: "نتیجه‌ای یافت نشد.", migration_warning: "توجه! سرور در حال گذراندن زمان‌بندی توقف موقت است.", volume: "صدا", status_playing: "وضعیت: پخش", status_stopped: "وضعیت: متوقف"
             }
 
         };
@@ -1030,10 +1032,11 @@ Each meter has rhythm.
         }
 
         const player = document.getElementById("radioPlayer");
-        document.getElementById("playBtn").addEventListener("click", () => { player.play(); document.getElementById("playerStatus").textContent = "Status: Playing"; });
-        document.getElementById("stopBtn").addEventListener("click", () => { player.pause(); player.currentTime = 0; document.getElementById("playerStatus").textContent = "Status: Stopped"; });
-        document.getElementById("volUpBtn").addEventListener("click", () => { if (player.volume < 1) player.volume += 0.1; });
-        document.getElementById("volDownBtn").addEventListener("click", () => { if (player.volume > 0) player.volume -= 0.1; });
+        const statusEl = document.getElementById("playerStatus");
+        const lang = localStorage.getItem("language") || "en";
+        document.getElementById("playBtn").addEventListener("click", () => { player.play(); statusEl.textContent = translations[lang].status_playing; });
+        document.getElementById("stopBtn").addEventListener("click", () => { player.pause(); player.currentTime = 0; statusEl.textContent = translations[lang].status_stopped; });
+        document.getElementById("volumeSlider").addEventListener("input", (e) => { player.volume = e.target.value / 100; document.getElementById("volumeValue").textContent = e.target.value + "%"; });
 
         async function fetchNowPlaying() {
             try {
