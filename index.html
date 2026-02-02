@@ -986,7 +986,23 @@ Each meter has rhythm.
         async function fetchPrayerInfo() {
             try {
                 console.log("Fetching prayer info...");
-                const res = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Manama&country=Bahrain&method=0');
+                
+                // Get user's location from IP
+                let city = 'Manama';
+                let country = 'Bahrain';
+                try {
+                    const geoRes = await fetch('https://ipapi.co/json/');
+                    const geoData = await geoRes.json();
+                    if (geoData.city && geoData.country_name) {
+                        city = geoData.city;
+                        country = geoData.country_name;
+                        console.log(`User location: ${city}, ${country}`);
+                    }
+                } catch (geoErr) {
+                    console.warn("Could not fetch location from IP, using default:", geoErr);
+                }
+                
+                const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=0`);
                 const data = await res.json();
                 console.log("Raw API data:", data);
 
@@ -1029,7 +1045,7 @@ Each meter has rhythm.
                 <tr><td>${labels.dhuhr}</td><td>${t.Dhuhr}</td></tr>
                 <tr><td>${labels.maghrib}</td><td>${t.Maghrib}</td></tr>
             </table>
-            <div style="text-align:center; margin-top:5px; font-size:10px; color:#888;">Manama, Bahrain</div>
+            <div style="text-align:center; margin-top:5px; font-size:10px; color:#888;">${city}, ${country}</div>
         `;
                 document.getElementById('prayer-display').innerHTML = html;
 
