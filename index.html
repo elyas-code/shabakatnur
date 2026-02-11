@@ -3,14 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Shabakat Nur Radio</title>
     <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#003">
     <meta name="description" content="Shabakat Nur Radio">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Shabakat Nur">
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -1057,9 +1058,28 @@ Each meter has rhythm.
         const player = document.getElementById("radioPlayer");
         const statusEl = document.getElementById("playerStatus");
         const lang = localStorage.getItem("language") || "en";
-        document.getElementById("playBtn").addEventListener("click", () => { player.play(); statusEl.textContent = translations[lang].status_playing; });
-        document.getElementById("stopBtn").addEventListener("click", () => { player.pause(); player.currentTime = 0; statusEl.textContent = translations[lang].status_stopped; });
-        document.getElementById("volumeSlider").addEventListener("input", (e) => { player.volume = e.target.value / 100; document.getElementById("volumeValue").textContent = e.target.value + "%"; });
+        
+        document.getElementById("playBtn").addEventListener("click", () => { 
+            player.play(); 
+            statusEl.textContent = translations[lang].status_playing;
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.playbackState = "playing";
+            }
+        });
+        
+        document.getElementById("stopBtn").addEventListener("click", () => { 
+            player.pause(); 
+            player.currentTime = 0; 
+            statusEl.textContent = translations[lang].status_stopped;
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.playbackState = "paused";
+            }
+        });
+        
+        document.getElementById("volumeSlider").addEventListener("input", (e) => { 
+            player.volume = e.target.value / 100; 
+            document.getElementById("volumeValue").textContent = e.target.value + "%"; 
+        });
 
         async function fetchNowPlaying() {
             try {
@@ -1067,9 +1087,58 @@ Each meter has rhythm.
                 const data = await res.json();
                 const station = data.find(s => s.station.shortcode === "shabakat_nur");
                 if (station && station.now_playing.song.title) {
-                    document.getElementById("trackTitle").textContent = station.now_playing.song.title;
-                    document.getElementById("trackArtist").textContent = station.now_playing.song.artist || "";
-                    document.getElementById("trackImage").src = station.now_playing.song.art || "https://albahrani.org/static/images/generic_album.jpg";
+                    const title = station.now_playing.song.title;
+                    const artist = station.now_playing.song.artist || "Shabakat Nur";
+                    const artwork = station.now_playing.song.art || "https://albahrani.org/static/images/generic_album.jpg";
+                    
+                    document.getElementById("trackTitle").textContent = title;
+                    document.getElementById("trackArtist").textContent = artist;
+                    document.getElementById("trackImage").src = artwork;
+                    
+                    // Update Media Session for iOS and other platforms
+                    if ('mediaSession' in navigator) {
+                        navigator.mediaSession.metadata = new MediaMetadata({
+                            title: title,
+                            artist: artist,
+                            album: 'Shabakat Nur Radio',
+                            artwork: [
+                                {
+                                    src: artwork,
+                                    sizes: '96x96',
+                                    type: 'image/jpeg'
+                                },
+                                {
+                                    src: artwork,
+                                    sizes: '128x128',
+                                    type: 'image/jpeg'
+                                },
+                                {
+                                    src: artwork,
+                                    sizes: '192x192',
+                                    type: 'image/jpeg'
+                                },
+                                {
+                                    src: artwork,
+                                    sizes: '256x256',
+                                    type: 'image/jpeg'
+                                },
+                                {
+                                    src: artwork,
+                                    sizes: '384x384',
+                                    type: 'image/jpeg'
+                                },
+                                {
+                                    src: artwork,
+                                    sizes: '512x512',
+                                    type: 'image/jpeg'
+                                }
+                            ]
+                        });
+                        
+                        // Set up media session action handlers
+                        navigator.mediaSession.setActionHandler('play', () => { player.play(); });
+                        navigator.mediaSession.setActionHandler('pause', () => { player.pause(); });
+                    }
                 }
             } catch (e) { }
         }
