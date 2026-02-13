@@ -3,7 +3,12 @@ const urlsToCache = [
   './',
   './index.html',
   './logo.png',
-  './manifest.json'
+  './manifest.json',
+  './f0rzNHe.png',
+  './Digital-CD-Disk-Vector-Transparent-PNG.png',
+  './banner.jpeg',
+  './pdf/fiqh/research-in-islamic-jurisprudence.pdf',
+  './pdf/poetry/bayan-fi-shi3r-hussaini.pdf'
 ];
 
 // Install event
