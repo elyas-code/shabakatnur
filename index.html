@@ -1058,8 +1058,10 @@ Each meter has rhythm.
         const player = document.getElementById("radioPlayer");
         const statusEl = document.getElementById("playerStatus");
         const lang = localStorage.getItem("language") || "en";
+        const baseStreamUrl = "https://albahrani.org/listen/shabakat_nur/SDradio.mp3";
         
         document.getElementById("playBtn").addEventListener("click", () => { 
+            player.src = baseStreamUrl + "?nocache=" + Math.random();
             player.play(); 
             statusEl.textContent = translations[lang].status_playing;
             if ('mediaSession' in navigator) {
@@ -1074,6 +1076,11 @@ Each meter has rhythm.
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.playbackState = "paused";
             }
+        });
+        
+        // Clear source on pause to prevent caching issues
+        player.addEventListener("pause", () => {
+            player.src = "";
         });
         
         document.getElementById("volumeSlider").addEventListener("input", (e) => { 
