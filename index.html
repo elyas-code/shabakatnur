@@ -439,6 +439,41 @@
             width: 100%;
         }
 
+        .install-prompt {
+            display: none;
+            background: linear-gradient(to bottom, #ffcc00, #ffaa00);
+            color: #003;
+            padding: 12px 15px;
+            text-align: center;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .install-prompt.show {
+            display: flex;
+        }
+
+        .install-prompt button {
+            background: #003;
+            color: #ffcc00;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .install-prompt button:hover {
+            background: #660000;
+            color: #fff;
+        }
+
         @media (max-width: 768px) {
             iframe {
                 height: 60vh;
@@ -448,6 +483,11 @@
 </head>
 
 <body>
+    <div id="installPrompt" class="install-prompt">
+        <span id="installText" data-translate="install_prompt_text">Add this app to your home screen for quick access!</span>
+        <button id="installBtn" data-translate="install_btn">Install</button>
+        <button id="dismissBtn" data-translate="dismiss_btn">Dismiss</button>
+    </div>
 
     <div class="page-wrapper">
         <header class="site-header">
@@ -661,6 +701,53 @@
         <div id="dialog-body"></div>
     </dialog>
     <script>
+        // Install Prompt Handler for PWA
+        let deferredPrompt = null;
+        const installPrompt = document.getElementById('installPrompt');
+        const installBtn = document.getElementById('installBtn');
+        const dismissBtn = document.getElementById('dismissBtn');
+
+        // Detect if device is mobile
+        const isMobile = () => /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+        // Listen for the beforeinstallprompt event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // Show the prompt banner if on mobile
+            if (isMobile()) {
+                installPrompt.classList.add('show');
+            }
+        });
+
+        // Install button handler
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                deferredPrompt = null;
+                installPrompt.classList.remove('show');
+            }
+        });
+
+        // Dismiss button handler
+        dismissBtn.addEventListener('click', () => {
+            installPrompt.classList.remove('show');
+            // Remember that user dismissed it
+            localStorage.setItem('installPromptDismissed', 'true');
+        });
+
+        // For iOS and browsers that don't support beforeinstallprompt
+        // Show a fallback prompt for mobile users
+        if (isMobile() && !('beforeinstallprompt' in window)) {
+            setTimeout(() => {
+                if (!localStorage.getItem('installPromptDismissed')) {
+                    installPrompt.classList.add('show');
+                }
+            }, 3000);
+        }
+
         const libraries = {
             lyrics: {
                 categories: {
@@ -783,7 +870,7 @@ Each meter has rhythm.
                 schedule_header: "Broadcast Schedule", contact_header: "Contact Us", email_header: "Email",
                 social_header: "Social Media", back_to_top: "Back to top", imsak: "Imsak", fajr: "Fajr",
                 dhuhr: "Dhuhr", maghrib: "Maghrib", sunrise: "Sunrise", now_playing: "Now Playing",
-                lang: "Language", newsletter_success: "Thanks for subscribing!", newsletter_error: "Something went wrong. Try again.", no_results: "No results found.", migration_warning: "Attention! Server is experiencing scheduled downtime.", volume: "Volume", status_playing: "Status: Playing", status_stopped: "Status: Stopped"
+                lang: "Language", newsletter_success: "Thanks for subscribing!", newsletter_error: "Something went wrong. Try again.", no_results: "No results found.", migration_warning: "Attention! Server is experiencing scheduled downtime.", volume: "Volume", status_playing: "Status: Playing", status_stopped: "Status: Stopped", install_prompt_text: "📱 Add this app to your home screen for quick access!", install_btn: "Install", dismiss_btn: "Dismiss"
             },
             ar: {
                 welcome_marquee: "أهلاً بكم في راديو شبكة نور - بث نور الإيمان ٧/٢٤ |  اللَّهُمَّ عَجِّل لِوَلِيِّكَ الْفَرَج | اللَّهُمَّ كُنْ لِوَلِيِّكَ الحُجَّةِ بْنِ الحَسَنِ صَلَواتُكَ عَلَيْهِ وَعَلى آبائِه فِي هذِهِ السّاعَةِ وَفِي كُلِّ ساعةٍ وَلِيّاً وَحافِظاً وَقائِداً وَناصِراً وَدَلِيلاً وَعَيْناً حَتّى تُسْكِنَهُ أَرْضَكَ طَوْعاً وَتُمَتِّعَهُ فِيْها طَوِيلاً",
@@ -797,7 +884,7 @@ Each meter has rhythm.
                 schedule_header: "جدول البث", contact_header: "اتصل بنا", email_header: "البريد الإلكتروني",
                 social_header: "وسائل التواصل", back_to_top: "العودة إلى الأعلى", imsak: "الإمساك", fajr: "الفجر",
                 dhuhr: "الظهرين", maghrib: "العشائين", sunrise: "الشروق", now_playing: "يذاع الآن",
-                lang: "اللغة", newsletter_success: "شكراً لاشتراكك!", newsletter_error: "حدث خطأ ما. حاول مرة أخرى.", no_results: "لم يتم العثور على نتائج.", migration_warning: "تنبيه! الخادم يخضع لتوقف مجدول حالياً.", volume: "مستوى الصوت", status_playing: "الحالة: يتم التشغيل", status_stopped: "الحالة: متوقف"
+                lang: "اللغة", newsletter_success: "شكراً لاشتراكك!", newsletter_error: "حدث خطأ ما. حاول مرة أخرى.", no_results: "لم يتم العثور على نتائج.", migration_warning: "تنبيه! الخادم يخضع لتوقف مجدول حالياً.", volume: "مستوى الصوت", status_playing: "الحالة: يتم التشغيل", status_stopped: "الحالة: متوقف", install_prompt_text: "أضف هذا التطبيق إلى شاشتك الرئيسية للوصول السريع!", install_btn: "تثبيت", dismiss_btn: "إغلاق"
             },
             fa: {
                 welcome_marquee: "به رادیو شبکه نور خوش آمدید – پخش نور ایمان به صورت ۲۴/۷ | اللَّهُمَّ عَجِّل لِوَلِيِّكَ الْفَرَج | اللَّهُمَّ كُنْ لِوَلِيِّكَ الحُجَّةِ بْنِ الحَسَنِ صَلَواتُكَ عَلَيْهِ وَعَلى آبائِه فِي هذِهِ السّاعَةِ وَفِي كُلِّ ساعةٍ وَلِيّاً وَحافِظاً وَقائِداً وَناصِراً وَدَلِيلاً وَعَيْناً حَتّى تُسْكِنَهُ أَرْضَكَ طَوْعاً وَتُمَتِّعَهُ فِيْها طَوِيلاً",
@@ -811,7 +898,7 @@ Each meter has rhythm.
                 schedule_header: "برنامه پخش", contact_header: "تماس با ما", email_header: "ایمیل",
                 social_header: "شبکه‌های اجتماعی", back_to_top: "بازگشت به بالا", imsak: "امساک", fajr: "فجر",
                 dhuhr: "ظهر", maghrib: "مغرب", sunrise: "طلوع خورشید", now_playing: "در حال پخش",
-                lang: "زبان", newsletter_success: "با تشکر از اشتراک شما!", newsletter_error: "مشکلی پیش آمد. دوباره تلاش کنید.", no_results: "نتیجه‌ای یافت نشد.", migration_warning: "توجه! سرور در حال گذراندن زمان‌بندی توقف موقت است.", volume: "صدا", status_playing: "وضعیت: پخش", status_stopped: "وضعیت: متوقف"
+                lang: "زبان", newsletter_success: "با تشکر از اشتراک شما!", newsletter_error: "مشکلی پیش آمد. دوباره تلاش کنید.", no_results: "نتیجه‌ای یافت نشد.", migration_warning: "توجه! سرور در حال گذراندن زمان‌بندی توقف موقت است.", volume: "صدا", status_playing: "وضعیت: پخش", status_stopped: "وضعیت: متوقف", install_prompt_text: "این برنامه را برای دسترسی سریع به صفحه اصلی اضافه کنید!", install_btn: "نصب", dismiss_btn: "بستن"
             }
 
         };
