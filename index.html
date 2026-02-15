@@ -704,49 +704,47 @@
         // Install Prompt Handler for PWA
         let deferredPrompt = null;
         const installPrompt = document.getElementById('installPrompt');
-        const installBtn = document.getElementById('installBtn');
-        const dismissBtn = document.getElementById('dismissBtn');
 
-        // Detect if device is mobile
-        const isMobile = () => /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (installPrompt) {
+            installPrompt.style.display = 'none';
+        }
 
-        // Listen for the beforeinstallprompt event
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // Show the prompt banner if on mobile
-            if (isMobile()) {
-                installPrompt.classList.add('show');
+            if (installPrompt) {
+                installPrompt.style.display = 'flex';
             }
+            console.log('beforeinstallprompt event fired.');
         });
 
-        // Install button handler
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User response to the install prompt: ${outcome}`);
-                deferredPrompt = null;
-                installPrompt.classList.remove('show');
-            }
-        });
-
-        // Dismiss button handler
-        dismissBtn.addEventListener('click', () => {
-            installPrompt.classList.remove('show');
-            // Remember that user dismissed it
-            localStorage.setItem('installPromptDismissed', 'true');
-        });
-
-        // For iOS and browsers that don't support beforeinstallprompt
-        // Show a fallback prompt for mobile users
-        if (isMobile() && !('beforeinstallprompt' in window)) {
-            setTimeout(() => {
-                if (!localStorage.getItem('installPromptDismissed')) {
-                    installPrompt.classList.add('show');
+        if (installPrompt) {
+            installPrompt.addEventListener('click', async (e) => {
+                // Check if Install button was clicked
+                if (e.target.id === 'installBtn' && deferredPrompt) {
+                    if (installPrompt) {
+                        installPrompt.style.display = 'none';
+                    }
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    console.log(`User response to the install prompt: ${outcome}`);
+                    deferredPrompt = null;
                 }
-            }, 3000);
+                // Check if Dismiss button was clicked
+                else if (e.target.id === 'dismissBtn') {
+                    installPrompt.style.display = 'none';
+                    localStorage.setItem('installPromptDismissed', 'true');
+                }
+            });
         }
+
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            if (installPrompt) {
+                installPrompt.style.display = 'none';
+            }
+            deferredPrompt = null;
+        });
 
         const libraries = {
             lyrics: {
