@@ -304,7 +304,12 @@
             animation-duration: 5000ms;
             animation-iteration-count: infinite;
             animation-timing-function: linear;
+            animation-play-state: paused;
             transition: left ease 0.5s;
+        }
+
+        .profile-pic.playing:before {
+            animation-play-state: running;
         }
 
         .profile-pic:hover:before {
@@ -1147,7 +1152,8 @@ Each meter has rhythm.
         
         document.getElementById("playBtn").addEventListener("click", () => { 
             player.src = baseStreamUrl + "?nocache=" + Math.random();
-            player.play(); 
+            player.play();
+            document.querySelector(".profile-pic").classList.add("playing");
             statusEl.textContent = translations[lang].status_playing;
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.playbackState = "playing";
@@ -1156,7 +1162,8 @@ Each meter has rhythm.
         
         document.getElementById("stopBtn").addEventListener("click", () => { 
             player.pause(); 
-            player.currentTime = 0; 
+            player.currentTime = 0;
+            document.querySelector(".profile-pic").classList.remove("playing");
             statusEl.textContent = translations[lang].status_stopped;
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.playbackState = "paused";
