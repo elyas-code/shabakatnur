@@ -497,10 +497,9 @@
         <div class="marquee-container">
             <span id="marquee-content" class="marquee-content" data-translate="welcome_marquee"></span>
         </div>
-        <!--div
-            style="background: #ffcc00; color: #000; padding: 10px; text-align: center; font-weight: bold; border-bottom: 2px solid #996600; font-family: 'Tahoma', sans-serif; font-size: 14px;">
-            <span data-translate="migration_warning"></span>
-        </div-->
+        <div id="downtimeBanner" style="display: none; background: #ff4444; color: #fff; padding: 10px; text-align: center; font-weight: bold; border-bottom: 2px solid #cc0000; font-family: 'Tahoma', sans-serif; font-size: 14px;">
+            <span data-translate="downtime_message"></span>
+        </div>
 
         <div class="content-container">
             <aside class="sidebar" id="right-sidebar">
@@ -869,7 +868,7 @@ Each meter has rhythm.
                 schedule_header: "Broadcast Schedule", contact_header: "Contact Us", email_header: "Email",
                 social_header: "Social Media", back_to_top: "Back to top", imsak: "Imsak", fajr: "Fajr",
                 dhuhr: "Dhuhr", maghrib: "Maghrib", sunrise: "Sunrise", now_playing: "Now Playing",
-                lang: "Language", newsletter_success: "Thanks for subscribing!", newsletter_error: "Something went wrong. Try again.", no_results: "No results found.", migration_warning: "Attention! Server is experiencing scheduled downtime.", volume: "Volume", status_playing: "Status: Playing", status_stopped: "Status: Stopped", install_prompt_text: "📱 Add this app to your home screen for quick access!", install_btn: "Install", dismiss_btn: "Dismiss", uptime_label: "Server Uptime:"
+                lang: "Language", newsletter_success: "Thanks for subscribing!", newsletter_error: "Something went wrong. Try again.", no_results: "No results found.", migration_warning: "Attention! Server is experiencing scheduled downtime.", volume: "Volume", status_playing: "Status: Playing", status_stopped: "Status: Stopped", install_prompt_text: "📱 Add this app to your home screen for quick access!", install_btn: "Install", dismiss_btn: "Dismiss", uptime_label: "Server Uptime:", server_down: "Server Down", downtime_message: "We are currently experiencing downtime. Please check back soon."
             },
             ar: {
                 welcome_marquee: "أهلاً بكم في راديو شبكة نور - بث نور الإيمان ٧/٢٤ |  اللَّهُمَّ عَجِّل لِوَلِيِّكَ الْفَرَج | اللَّهُمَّ كُنْ لِوَلِيِّكَ الحُجَّةِ بْنِ الحَسَنِ صَلَواتُكَ عَلَيْهِ وَعَلى آبائِه فِي هذِهِ السّاعَةِ وَفِي كُلِّ ساعةٍ وَلِيّاً وَحافِظاً وَقائِداً وَناصِراً وَدَلِيلاً وَعَيْناً حَتّى تُسْكِنَهُ أَرْضَكَ طَوْعاً وَتُمَتِّعَهُ فِيْها طَوِيلاً",
@@ -883,7 +882,7 @@ Each meter has rhythm.
                 schedule_header: "جدول البث", contact_header: "اتصل بنا", email_header: "البريد الإلكتروني",
                 social_header: "وسائل التواصل", back_to_top: "العودة إلى الأعلى", imsak: "الإمساك", fajr: "الفجر",
                 dhuhr: "الظهرين", maghrib: "العشائين", sunrise: "الشروق", now_playing: "يذاع الآن",
-                lang: "اللغة", newsletter_success: "شكراً لاشتراكك!", newsletter_error: "حدث خطأ ما. حاول مرة أخرى.", no_results: "لم يتم العثور على نتائج.", migration_warning: "تنبيه! الخادم يخضع لتوقف مجدول حالياً.", volume: "مستوى الصوت", status_playing: "الحالة: يتم التشغيل", status_stopped: "الحالة: متوقف", install_prompt_text: "أضف هذا التطبيق إلى شاشتك الرئيسية للوصول السريع!", install_btn: "تثبيت", dismiss_btn: "إغلاق", uptime_label: "وقت تشغيل الخادم:"
+                lang: "اللغة", newsletter_success: "شكراً لاشتراكك!", newsletter_error: "حدث خطأ ما. حاول مرة أخرى.", no_results: "لم يتم العثور على نتائج.", migration_warning: "تنبيه! الخادم يخضع لتوقف مجدول حالياً.", volume: "مستوى الصوت", status_playing: "الحالة: يتم التشغيل", status_stopped: "الحالة: متوقف", install_prompt_text: "أضف هذا التطبيق إلى شاشتك الرئيسية للوصول السريع!", install_btn: "تثبيت", dismiss_btn: "إغلاق", uptime_label: "وقت تشغيل الخادم:", server_down: "الخادم معطل", downtime_message: "نعتذر عن انقطاع الخدمة حالياً. يرجى المحاولة لاحقاً."
             },
             fa: {
                 welcome_marquee: "به رادیو شبکه نور خوش آمدید – پخش نور ایمان به صورت ۲۴/۷ | اللَّهُمَّ عَجِّل لِوَلِيِّكَ الْفَرَج | اللَّهُمَّ كُنْ لِوَلِيِّكَ الحُجَّةِ بْنِ الحَسَنِ صَلَواتُكَ عَلَيْهِ وَعَلى آبائِه فِي هذِهِ السّاعَةِ وَفِي كُلِّ ساعةٍ وَلِيّاً وَحافِظاً وَقائِداً وَناصِراً وَدَلِيلاً وَعَيْناً حَتّى تُسْكِنَهُ أَرْضَكَ طَوْعاً وَتُمَتِّعَهُ فِيْها طَوِيلاً",
@@ -897,7 +896,7 @@ Each meter has rhythm.
                 schedule_header: "برنامه پخش", contact_header: "تماس با ما", email_header: "ایمیل",
                 social_header: "شبکه‌های اجتماعی", back_to_top: "بازگشت به بالا", imsak: "امساک", fajr: "فجر",
                 dhuhr: "ظهر", maghrib: "مغرب", sunrise: "طلوع خورشید", now_playing: "در حال پخش",
-                lang: "زبان", newsletter_success: "با تشکر از اشتراک شما!", newsletter_error: "مشکلی پیش آمد. دوباره تلاش کنید.", no_results: "نتیجه‌ای یافت نشد.", migration_warning: "توجه! سرور در حال گذراندن زمان‌بندی توقف موقت است.", volume: "صدا", status_playing: "وضعیت: پخش", status_stopped: "وضعیت: متوقف", install_prompt_text: "این برنامه را برای دسترسی سریع به صفحه اصلی اضافه کنید!", install_btn: "نصب", dismiss_btn: "بستن", uptime_label: "زمان فعالیت سرور:"
+                lang: "زبان", newsletter_success: "با تشکر از اشتراک شما!", newsletter_error: "مشکلی پیش آمد. دوباره تلاش کنید.", no_results: "نتیجه‌ای یافت نشد.", migration_warning: "توجه! سرور در حال گذراندن زمان‌بندی توقف موقت است.", volume: "صدا", status_playing: "وضعیت: پخش", status_stopped: "وضعیت: متوقف", install_prompt_text: "این برنامه را برای دسترسی سریع به صفحه اصلی اضافه کنید!", install_btn: "نصب", dismiss_btn: "بستن", uptime_label: "زمان فعالیت سرور:", server_down: "سرور خاموش است", downtime_message: "درحال حاضر ما توقف در خدمات را تجربه می‌کنیم. لطفاً بعداً دوباره تلاش کنید."
             }
 
         };
@@ -1240,15 +1239,42 @@ Each meter has rhythm.
             try {
                 const res = await fetch("https://api.albahrani.org/");
                 if (!res.ok) {
-                    console.warn(`API returned ${res.status}`);
+                    showDowntimeMessage();
                     return;
                 }
                 const data = await res.json();
                 if (data.uptime_human && data.uptime_human.formatted) {
                     document.getElementById("uptimeDisplay").textContent = data.uptime_human.formatted;
+                    hideDowntimeMessage();
+                } else {
+                    showDowntimeMessage();
                 }
             } catch (e) {
-                console.warn("Uptime API unavailable");
+                showDowntimeMessage();
+            }
+        }
+
+        function showDowntimeMessage() {
+            const uptimeEl = document.getElementById("uptimeDisplay");
+            if (uptimeEl) {
+                const lang = localStorage.getItem('language') || 'en';
+                uptimeEl.textContent = translations[lang].server_down || "Server Down";
+                uptimeEl.style.color = "#ff6666";
+            }
+            const downtimeBanner = document.getElementById("downtimeBanner");
+            if (downtimeBanner) {
+                downtimeBanner.style.display = "block";
+            }
+        }
+
+        function hideDowntimeMessage() {
+            const uptimeEl = document.getElementById("uptimeDisplay");
+            if (uptimeEl) {
+                uptimeEl.style.color = "#ffcc00";
+            }
+            const downtimeBanner = document.getElementById("downtimeBanner");
+            if (downtimeBanner) {
+                downtimeBanner.style.display = "none";
             }
         }
 
