@@ -40,7 +40,7 @@
         }
 
         .page-wrapper {
-            max-width: 1200px;
+            max-width: 1100px;
             width: 100%;
             background: rgba(0, 0, 0, 0.5);
             box-shadow: 0 0 20px #000;
@@ -369,16 +369,6 @@
             display: block;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
         @media (max-width: 900px) {
             .content-container {
                 flex-direction: column;
@@ -701,7 +691,6 @@
         <div id="dialog-body"></div>
     </dialog>
     <script>
-        // Install Prompt Handler for PWA
         let deferredPrompt = null;
         const installPrompt = document.getElementById('installPrompt');
 
@@ -712,7 +701,13 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            if (installPrompt) {
+            const isWindows = /Win/.test(navigator.platform);
+            if (isWindows) {
+                console.log('Install prompt disabled on Windows');
+                return;
+            }
+            const isDismissed = localStorage.getItem('installPromptDismissed') === 'true';
+            if (installPrompt && !isDismissed) {
                 installPrompt.style.display = 'flex';
             }
             console.log('beforeinstallprompt event fired.');
@@ -720,7 +715,6 @@
 
         if (installPrompt) {
             installPrompt.addEventListener('click', async (e) => {
-                // Check if Install button was clicked
                 if (e.target.id === 'installBtn' && deferredPrompt) {
                     if (installPrompt) {
                         installPrompt.style.display = 'none';
@@ -730,7 +724,6 @@
                     console.log(`User response to the install prompt: ${outcome}`);
                     deferredPrompt = null;
                 }
-                // Check if Dismiss button was clicked
                 else if (e.target.id === 'dismissBtn') {
                     installPrompt.style.display = 'none';
                     localStorage.setItem('installPromptDismissed', 'true');
